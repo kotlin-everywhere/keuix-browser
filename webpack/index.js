@@ -1,1 +1,1 @@
-require('../build/classes/test/browser.kt_test');
+require('../build/classes/test/ktbrowser_test');

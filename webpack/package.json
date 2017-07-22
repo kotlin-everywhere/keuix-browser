@@ -8,5 +8,9 @@
   "scripts": {
     "build": "webpack",
     "dev": "webpack-dev-server"
+  },
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "snabbdom": "^0.6.9"
   }
 }
