@@ -2,6 +2,7 @@ package com.github.kotlin.everywhere.browser
 
 import com.github.kotlin.everywhere.browser.Html.Companion.text
 import com.github.kotlin.everywhere.ktqunit.asyncTest
+import com.github.kotlin.everywhere.ktqunit.fixture
 import org.junit.Test
 import org.w3c.dom.Element
 import kotlin.test.assertEquals
@@ -25,7 +26,7 @@ external val q: dynamic
 class TestProgram {
     @Test
     fun testProgram() {
-        val fixture = q("#qunit-fixture")
+        val fixture = q(fixture())
         val container = q("<div>").appendTo(fixture)[0] as Element
         asyncTest { resolve, _ ->
             val INIT = 0
