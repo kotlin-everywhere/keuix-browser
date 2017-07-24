@@ -3,6 +3,7 @@ package com.github.kotlin.everywhere.browser
 import com.github.kotlin.everywhere.browser.Snabbdom.h
 import org.w3c.dom.Element
 import org.w3c.dom.events.Event
+import kotlin.browser.window
 
 sealed class Cmd<out S> {
     companion object {
@@ -97,12 +98,17 @@ private fun <S> Html<S>.toVirtualNode(receiver: (S) -> Unit): dynamic {
 class Program<M, S>(private val container: Element, init: M,
                     private val update: (S, M) -> Pair<M, Cmd<S>>, private val view: (M) -> Html<S>, onAfterRender: ((Element) -> Unit)?) {
 
+    private var requestAnimationFrameId: Int? = null
     private var model = init
+    private var previousModel = init
+
     private val receiver: (S) -> Unit = { msg ->
         val (newModel, _) = update(msg, model)
-        if (newModel != model) {
+        if (requestAnimationFrameId == null && model != newModel) {
             model = newModel
-            updateView()
+            requestAnimationFrameId = window.requestAnimationFrame {
+                updateView()
+            }
         }
     }
     private var virtualNode = h("div", view(model).toVirtualNode(receiver))
@@ -113,7 +119,11 @@ class Program<M, S>(private val container: Element, init: M,
     }
 
     private fun updateView() {
-        virtualNode = patch(virtualNode, h("div", view(model).toVirtualNode(receiver)))
+        requestAnimationFrameId = null
+        if (previousModel != model) {
+            previousModel = model
+            virtualNode = patch(virtualNode, h("div", view(model).toVirtualNode(receiver)))
+        }
     }
 }
 
