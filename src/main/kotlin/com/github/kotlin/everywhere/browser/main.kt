@@ -41,7 +41,7 @@ sealed class Attribute<out S> {
             return TextProperty("className", class_)
         }
 
-        fun <S> disabled(disabled: Boolean) : Attribute<S> {
+        fun <S> disabled(disabled: Boolean): Attribute<S> {
             return BooleanProperty("disabled", disabled)
         }
     }
@@ -81,18 +81,23 @@ private fun <S> Html<S>.toVirtualNode(): dynamic {
 }
 
 class Program<M, S>(private val container: Element, init: M,
-                    private val update: (S, M) -> Pair<M, Cmd<S>>, private val view: (M) -> Html<S>, onAfterRender: (Element) -> Unit) {
+                    private val update: (S, M) -> Pair<M, Cmd<S>>, private val view: (M) -> Html<S>, onAfterRender: ((Element) -> Unit)?) {
 
     private var model = init
     private var vNode = h("div", view(model).toVirtualNode())
-    private val patch = Snabbdom.init({ onAfterRender(container) })
+    private val patch = if (onAfterRender != null) Snabbdom.init({ onAfterRender(container) }) else Snabbdom.init(null)
 
     init {
         patch(container, vNode)
     }
 }
 
-fun <M, S> runProgram(container: Element, init: M, update: (S, M) -> Pair<M, Cmd<S>>, view: (M) -> Html<S>, onAfterRender: (Element) -> Unit): Program<M, S> {
+internal fun <M, S> runProgram(container: Element, init: M, update: (S, M) -> Pair<M, Cmd<S>>, view: (M) -> Html<S>, onAfterRender: (Element) -> Unit): Program<M, S> {
     return Program(container, init, update, view, onAfterRender)
+}
+
+@Suppress("unused")
+fun <M, S> runProgram(container: Element, init: M, update: (S, M) -> Pair<M, Cmd<S>>, view: (M) -> Html<S>): Program<M, S> {
+    return Program(container, init, update, view, null)
 }
 

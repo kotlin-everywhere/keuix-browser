@@ -24,7 +24,7 @@ internal object Snabbdom {
     @Suppress("HasPlatformType")
     val h = SnabbdomJsHelper.default
 
-    fun init(onPost: () -> Unit): dynamic {
+    fun init(onPost: (() -> Unit)?): dynamic {
         return SnabbdomJs.init(arrayOf(
                 SnabbdomJsModulesProps.default, SnabbdomJsModulesEventListeners.default,
                 object {
