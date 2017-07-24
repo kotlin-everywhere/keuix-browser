@@ -102,13 +102,12 @@ class Program<M, S>(private val container: Element, init: M,
     private var model = init
     private var previousModel = init
 
+    private val _updateView: (Double) -> Unit = { updateView() }
     private val receiver: (S) -> Unit = { msg ->
         val (newModel, _) = update(msg, model)
         if (requestAnimationFrameId == null && model != newModel) {
             model = newModel
-            requestAnimationFrameId = window.requestAnimationFrame {
-                updateView()
-            }
+            requestAnimationFrameId = window.requestAnimationFrame(_updateView)
         }
     }
     private var virtualNode = h("div", view(model).toVirtualNode(receiver))
