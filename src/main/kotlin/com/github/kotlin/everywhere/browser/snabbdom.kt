@@ -11,7 +11,7 @@ private external object SnabbdomJsModulesProps {
 }
 
 @JsModule("snabbdom/modules/eventlisteners")
-private external object SnabbdomJsModulesEventlisteners {
+private external object SnabbdomJsModulesEventListeners {
     val default: dynamic
 }
 
@@ -21,11 +21,14 @@ private external object SnabbdomJsHelper {
 }
 
 internal object Snabbdom {
+    @Suppress("HasPlatformType")
     val h = SnabbdomJsHelper.default
+
     fun init(onPost: () -> Unit): dynamic {
         return SnabbdomJs.init(arrayOf(
-                SnabbdomJsModulesProps.default, SnabbdomJsModulesEventlisteners.default,
+                SnabbdomJsModulesProps.default, SnabbdomJsModulesEventListeners.default,
                 object {
+                    @Suppress("unused")
                     val post = onPost
                 }
         ))

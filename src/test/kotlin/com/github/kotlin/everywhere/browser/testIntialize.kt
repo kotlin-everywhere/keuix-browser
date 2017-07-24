@@ -28,17 +28,11 @@ class TestProgram {
     fun testProgram() {
         val fixture = q(fixture())
         val container = q("<div>").appendTo(fixture)[0] as Element
+
         asyncTest { resolve, _ ->
-            val INIT = 0
-            var count = 0
             runProgram(container, init, update, view) {
-                when (count) {
-                    INIT -> {
-                        assertEquals("count = 0", fixture.text())
-                        resolve(Unit)
-                    }
-                }
-                count += 1
+                assertEquals("count = 0", fixture.text())
+                resolve(Unit)
             }
         }
     }
