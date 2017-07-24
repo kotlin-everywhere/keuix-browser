@@ -25,12 +25,20 @@ internal object Snabbdom {
     val h = SnabbdomJsHelper.default
 
     fun init(onPost: (() -> Unit)?): dynamic {
-        return SnabbdomJs.init(arrayOf(
-                SnabbdomJsModulesProps.default, SnabbdomJsModulesEventListeners.default,
-                object {
-                    @Suppress("unused")
-                    val post = onPost
-                }
-        ))
+        val hookModule: dynamic = if (onPost != null) {
+            object {
+                @Suppress("unused")
+                val post = onPost
+            }
+        } else {
+            null
+        }
+
+
+        return SnabbdomJs.init(
+                arrayOf(SnabbdomJsModulesProps.default, SnabbdomJsModulesEventListeners.default, hookModule)
+                        .filterNotNull()
+                        .toTypedArray()
+        )
     }
 }
