@@ -1,7 +1,9 @@
 package com.github.kotlin.everywhere.browser
 
 import com.github.kotlin.everywhere.browser.Attribute.Companion.class_
+import com.github.kotlin.everywhere.browser.Attribute.Companion.disabled
 import com.github.kotlin.everywhere.browser.Html.Companion.div
+import com.github.kotlin.everywhere.browser.Html.Companion.input
 import com.github.kotlin.everywhere.ktqunit.asyncTest
 import com.github.kotlin.everywhere.ktqunit.fixture
 import org.junit.Test
@@ -31,6 +33,28 @@ class TestView {
         asyncTest { resolve, _ ->
             runProgram(container, init, update, view) {
                 assertEquals("<div class=\"class\"></div>", root().html())
+                resolve(Unit)
+            }
+        }
+    }
+
+    @Test
+    fun testBooleanProperty() {
+        val view: (Model) -> Html<Msg> = { _ ->
+            div(
+                    listOf(),
+                    listOf(
+                            input(listOf(disabled(true)), listOf()),
+                            input(listOf(disabled(false)), listOf())
+                    )
+            )
+        }
+
+        val (container, root) = prepareFixture()
+
+        asyncTest { resolve, _ ->
+            runProgram(container, init, update, view) {
+                assertEquals("<input disabled=\"\"><input>", root().children().first().html())
                 resolve(Unit)
             }
         }

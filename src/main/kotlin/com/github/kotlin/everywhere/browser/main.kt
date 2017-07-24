@@ -22,6 +22,10 @@ sealed class Html<out S> {
         fun <S> div(attributes: List<Attribute<S>>, children: List<Html<S>>): Html<S> {
             return Element("div", attributes, children)
         }
+
+        fun <S> input(attributes: List<Attribute<S>>, children: List<Html<S>>): Html<S> {
+            return Element("input", attributes, children)
+        }
     }
 
     internal class Text<out S>(val text: String) : Html<S>()
@@ -30,10 +34,15 @@ sealed class Html<out S> {
 
 sealed class Attribute<out S> {
     internal class TextProperty<out S>(val name: String, val value: String) : Attribute<S>()
+    internal class BooleanProperty<out S>(val name: String, val value: Boolean) : Attribute<S>()
 
     companion object {
         fun <S> class_(class_: String): Attribute<S> {
             return TextProperty("className", class_)
+        }
+
+        fun <S> disabled(disabled: Boolean) : Attribute<S> {
+            return BooleanProperty("disabled", disabled)
         }
     }
 }
@@ -43,6 +52,7 @@ private fun <S> List<Attribute<S>>.toProps(): dynamic {
     this.forEach { attr ->
         when (attr) {
             is Attribute.TextProperty -> props[attr.name] = attr.value
+            is Attribute.BooleanProperty -> props[attr.name] = attr.value
         }
     }
     return props
