@@ -19,27 +19,54 @@ sealed class Html<out S> {
             return Text(string)
         }
 
-        fun <S> div(children: List<Html<S>>): Html<S> {
-            return Element("div", children)
+        fun <S> div(attributes: List<Attribute<S>>, children: List<Html<S>>): Html<S> {
+            return Element("div", attributes, children)
         }
     }
 
     internal class Text<out S>(val text: String) : Html<S>()
-    internal class Element<out S>(val tagName: String, val children: List<Html<S>>) : Html<S>()
+    internal class Element<out S>(val tagName: String, val attributes: List<Attribute<S>>, val children: List<Html<S>>) : Html<S>()
+}
+
+sealed class Attribute<out S> {
+    internal class TextProperty<out S>(val name: String, val value: String) : Attribute<S>()
+
+    companion object {
+        fun <S> class_(class_: String): Attribute<S> {
+            return TextProperty("className", class_)
+        }
+    }
+}
+
+private fun <S> List<Attribute<S>>.toProps(): dynamic {
+    val props: dynamic = object {}
+    this.forEach { attr ->
+        when (attr) {
+            is Attribute.TextProperty -> props[attr.name] = attr.value
+        }
+    }
+    return props
 }
 
 private fun <S> Html<S>.toVirtualNode(): dynamic {
     return when (this) {
         is Html.Text -> this.text
-        is Html.Element -> h(
-                this.tagName,
-                this.children
-                        .map {
-                            @Suppress("UnsafeCastFromDynamic")
-                            it.toVirtualNode()
-                        }
-                        .toTypedArray()
-        )
+        is Html.Element -> {
+            val data: dynamic = object {}
+            if (this.attributes.isNotEmpty()) {
+                data["props"] = this.attributes.toProps()
+            }
+            h(
+                    this.tagName,
+                    data,
+                    this.children
+                            .map {
+                                @Suppress("UnsafeCastFromDynamic")
+                                it.toVirtualNode()
+                            }
+                            .toTypedArray()
+            )
+        }
     }
 }
 
