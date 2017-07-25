@@ -24,6 +24,8 @@ compileTestKotlin2Js {
     kotlinOptions.main = "noCall"
 }
 
+apply plugin: 'maven'
+
 repositories {
     mavenCentral()
     maven { url 'https://jitpack.io' }
@@ -35,22 +37,17 @@ dependencies {
     testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
 }
 
+build.doLast {
+    (configurations.compile + configurations.testCompile).each { File file ->
+        copy {
+            includeEmptyDirs = false
 
-// detect intellij
-boolean is_intellij = false
-for (Map.Entry<Object, Object> entry : System.properties.entrySet()) {
-    if (entry.value.toString().toLowerCase().indexOf("intellij") != -1) {
-        is_intellij = true
-    }
-}
-
-if (is_intellij) {
-    sourceSets {
-        main.kotlin.srcDirs += 'src/test/kotlin'
-        test.kotlin.srcDirs = []
-    }
-
-    dependencies {
-        compile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
+            from zipTree(file.absolutePath)
+            into "${buildDir}/kotlin-javascript-dependencies"
+            include { fileTreeElement ->
+                def path = fileTreeElement.path
+                path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
+            }
+        }
     }
 }

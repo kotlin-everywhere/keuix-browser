@@ -2,10 +2,11 @@ var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
+//noinspection JSUnusedGlobalSymbols
 module.exports = {
     entry: './index.js',
     resolve: {
-        modules: ['./node_modules', '../build/classes/main/lib', '../build/classes/main'].map(function (s) {
+        modules: ['./node_modules', '../build/kotlin-javascript-dependencies', '../build/classes/main'].map(function (s) {
             return path.resolve(__dirname, s);
         })
     },
