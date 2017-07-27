@@ -18,6 +18,14 @@ sealed class Cmd<out S> {
 class HtmlBuilder<S> {
     internal val children = mutableListOf<Html<S>>()
 
+    fun button(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null) {
+        children.add(Html.button(*attributes, init = init))
+    }
+
+    fun div(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null) {
+        children.add(Html.div(*attributes, init = init))
+    }
+
     fun input(vararg attributes: Attribute<S>) {
         children.add(Html.input(*attributes))
     }
@@ -31,8 +39,14 @@ typealias HtmlBuilderInit<S> = HtmlBuilder<S>.() -> Unit
 
 sealed class Html<out S> {
     companion object {
-        fun <S> text(string: String): Html<S> {
-            return Text(string)
+        fun <S> button(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
+            return Element(
+                    "button", attributes.asList(),
+                    if (init != null)
+                        HtmlBuilder<S>().apply(init).children
+                    else
+                        listOf()
+            )
         }
 
         fun <S> div(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
@@ -49,14 +63,8 @@ sealed class Html<out S> {
             return Element("input", attributes.asList(), listOf())
         }
 
-        fun <S> button(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
-            return Element(
-                    "button", attributes.asList(),
-                    if (init != null)
-                        HtmlBuilder<S>().apply(init).children
-                    else
-                        listOf()
-            )
+        fun <S> text(string: String): Html<S> {
+            return Text(string)
         }
     }
 

@@ -82,6 +82,40 @@ class TestView {
         )
     }
 
+    @Test
+    fun testBuilderDiv() {
+        val view: (Model) -> Html<Msg> = { _ ->
+            Html.div {
+                div { +"division" }
+            }
+        }
+
+        val (container, root) = prepareFixture()
+
+        asyncSerialTest(container, view,
+                {
+                    assertEquals("<div><div>division</div></div>", root().html())
+                }
+        )
+    }
+
+    @Test
+    fun testBuilderButton() {
+        val view: (Model) -> Html<Msg> = { _ ->
+            Html.div {
+                button { +"label" }
+            }
+        }
+
+        val (container, root) = prepareFixture()
+
+        asyncSerialTest(container, view,
+                {
+                    assertEquals("<div><button>label</button></div>", root().html())
+                }
+        )
+    }
+
     private fun asyncSerialTest(container: Element, view: (Model) -> Html<Msg>, vararg tests: () -> Unit) {
         val lefts = tests.toMutableList()
         return asyncTest { resolve, _ ->
