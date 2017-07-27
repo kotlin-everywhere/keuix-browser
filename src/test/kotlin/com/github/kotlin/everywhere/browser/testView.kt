@@ -3,10 +3,6 @@ package com.github.kotlin.everywhere.browser
 import com.github.kotlin.everywhere.browser.Attribute.Companion.class_
 import com.github.kotlin.everywhere.browser.Attribute.Companion.disabled
 import com.github.kotlin.everywhere.browser.Attribute.Companion.onClick
-import com.github.kotlin.everywhere.browser.Html.Companion.button
-import com.github.kotlin.everywhere.browser.Html.Companion.div
-import com.github.kotlin.everywhere.browser.Html.Companion.input
-import com.github.kotlin.everywhere.browser.Html.Companion.text
 import com.github.kotlin.everywhere.ktqunit.asyncTest
 import com.github.kotlin.everywhere.ktqunit.fixture
 import org.junit.Test
@@ -32,7 +28,7 @@ class TestView {
     @Test
     fun testTextProperty() {
         val view: (Model) -> Html<Msg> = { _ ->
-            div(listOf(class_("class")), listOf())
+            Html.div(class_("class"))
         }
 
         val (container, root) = prepareFixture()
@@ -48,13 +44,10 @@ class TestView {
     @Test
     fun testBooleanProperty() {
         val view: (Model) -> Html<Msg> = { _ ->
-            div(
-                    listOf(),
-                    listOf(
-                            input(listOf(disabled(true)), listOf()),
-                            input(listOf(disabled(false)), listOf())
-                    )
-            )
+            Html.div {
+                input(disabled(true))
+                input(disabled(false))
+            }
         }
 
         val (container, root) = prepareFixture()
@@ -70,7 +63,9 @@ class TestView {
     @Test
     fun testEventHandler() {
         val view: (Model) -> Html<Msg> = { (clicked) ->
-            button(listOf(onClick(Msg.Clicked)), listOf(text(if (clicked) "clicked" else "")))
+            Html.button(onClick(Msg.Clicked)) {
+                +(if (clicked) "clicked" else "")
+            }
         }
 
         val (container, root) = prepareFixture()

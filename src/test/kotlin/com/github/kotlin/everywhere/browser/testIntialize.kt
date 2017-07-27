@@ -1,6 +1,5 @@
 package com.github.kotlin.everywhere.browser
 
-import com.github.kotlin.everywhere.browser.Html.Companion.text
 import com.github.kotlin.everywhere.ktqunit.asyncTest
 import com.github.kotlin.everywhere.ktqunit.fixture
 import org.junit.Test
@@ -17,7 +16,7 @@ private val update: (Msg, Model) -> Pair<Model, Cmd<Msg>> = { _, model ->
 }
 
 private val view: (Model) -> Html<Msg> = { (count) ->
-    text("count = $count")
+    Html.text("count = $count")
 }
 
 @JsModule("jquery")

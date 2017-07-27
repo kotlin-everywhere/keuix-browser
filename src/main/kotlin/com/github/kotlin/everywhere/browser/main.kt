@@ -15,22 +15,48 @@ sealed class Cmd<out S> {
     class None<out S> : Cmd<S>()
 }
 
+class HtmlBuilder<S> {
+    internal val children = mutableListOf<Html<S>>()
+
+    fun input(vararg attributes: Attribute<S>) {
+        children.add(Html.input(*attributes))
+    }
+
+    operator fun String.unaryPlus() {
+        children.add(Html.text(this))
+    }
+}
+
+typealias HtmlBuilderInit<S> = HtmlBuilder<S>.() -> Unit
+
 sealed class Html<out S> {
     companion object {
         fun <S> text(string: String): Html<S> {
             return Text(string)
         }
 
-        fun <S> div(attributes: List<Attribute<S>>, children: List<Html<S>>): Html<S> {
-            return Element("div", attributes, children)
+        fun <S> div(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
+            return Element(
+                    "div", attributes.asList(),
+                    if (init != null)
+                        HtmlBuilder<S>().apply(init).children
+                    else
+                        listOf()
+            )
         }
 
-        fun <S> input(attributes: List<Attribute<S>>, children: List<Html<S>>): Html<S> {
-            return Element("input", attributes, children)
+        fun <S> input(vararg attributes: Attribute<S>): Html<S> {
+            return Element("input", attributes.asList(), listOf())
         }
 
-        fun <S> button(attributes: List<Attribute<S>>, children: List<Html<S>>): Html<S> {
-            return Element("button", attributes, children)
+        fun <S> button(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
+            return Element(
+                    "button", attributes.asList(),
+                    if (init != null)
+                        HtmlBuilder<S>().apply(init).children
+                    else
+                        listOf()
+            )
         }
     }
 
