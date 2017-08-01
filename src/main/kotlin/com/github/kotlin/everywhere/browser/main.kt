@@ -2,7 +2,6 @@ package com.github.kotlin.everywhere.browser
 
 import com.github.kotlin.everywhere.browser.Snabbdom.h
 import org.w3c.dom.Element
-import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.events.Event
 import kotlin.browser.window
 
@@ -116,7 +115,10 @@ fun <S> onClick(msg: S): Attribute<S> {
 }
 
 fun <S> onInput(tagger: (String) -> S): Attribute<S> {
-    return Attribute.EventHandler("input") { tagger((it.target as HTMLInputElement).value) }
+    return Attribute.EventHandler("input") {
+        val target: dynamic = it.target
+        tagger(target.value as String)
+    }
 }
 
 fun <S> value(value: String): Attribute<S> {
