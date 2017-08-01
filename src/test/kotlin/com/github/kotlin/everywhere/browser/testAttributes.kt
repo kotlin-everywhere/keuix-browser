@@ -19,7 +19,7 @@ class TestAttributes {
 
 
     @Test
-    fun testTextProperty() {
+    fun testClass() {
         val view: (Model) -> Html<Msg> = { _ ->
             Html.div(Attribute.class_("class"))
         }
@@ -32,7 +32,7 @@ class TestAttributes {
     }
 
     @Test
-    fun testBooleanProperty() {
+    fun testDisabled() {
         val view: (Model) -> Html<Msg> = { _ ->
             Html.div {
                 input(Attribute.disabled(true))
