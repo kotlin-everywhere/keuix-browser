@@ -1,7 +1,5 @@
 package com.github.kotlin.everywhere.browser
 
-import com.github.kotlin.everywhere.browser.Attribute.Companion.class_
-import com.github.kotlin.everywhere.browser.Attribute.Companion.disabled
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -18,35 +16,6 @@ class TestView {
 
     private fun serialViewTests(view: (Model) -> Html<Msg>, vararg tests: (root: () -> dynamic) -> Unit) {
         asyncSerialTest(init, update, view, *tests)
-    }
-
-    @Test
-    fun testTextProperty() {
-        val view: (Model) -> Html<Msg> = { _ ->
-            Html.div(class_("class"))
-        }
-
-        serialViewTests(view,
-                {
-                    assertEquals("<div class=\"class\"></div>", it().html())
-                }
-        )
-    }
-
-    @Test
-    fun testBooleanProperty() {
-        val view: (Model) -> Html<Msg> = { _ ->
-            Html.div {
-                input(disabled(true))
-                input(disabled(false))
-            }
-        }
-
-        serialViewTests(view,
-                {
-                    assertEquals("<input disabled=\"\"><input>", it().children().first().html())
-                }
-        )
     }
 
     @Test
