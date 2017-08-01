@@ -100,20 +100,22 @@ sealed class Attribute<out S> {
     class TextProperty<out S>(val name: String, val value: String) : Attribute<S>()
     class BooleanProperty<out S>(val name: String, val value: Boolean) : Attribute<S>()
     class EventHandler<out S>(val name: String, val value: (Event) -> S) : Attribute<S>()
+}
 
-    companion object {
-        fun <S> class_(class_: String): Attribute<S> {
-            return TextProperty("className", class_)
-        }
+fun <S> class_(class_: String): Attribute<S> {
+    return Attribute.TextProperty("className", class_)
+}
 
-        fun <S> disabled(disabled: Boolean): Attribute<S> {
-            return BooleanProperty("disabled", disabled)
-        }
+fun <S> disabled(disabled: Boolean): Attribute<S> {
+    return Attribute.BooleanProperty("disabled", disabled)
+}
 
-        fun <S> onClick(msg: S): Attribute<S> {
-            return EventHandler("click") { msg }
-        }
-    }
+fun <S> onClick(msg: S): Attribute<S> {
+    return Attribute.EventHandler("click") { msg }
+}
+
+fun <S> value(value: String): Attribute<S> {
+    return Attribute.TextProperty("value", value)
 }
 
 private fun <S> List<Attribute<S>>.toProps(receiver: (S) -> Unit): Pair<dynamic, dynamic> {
@@ -139,6 +141,7 @@ private fun <S> Html<S>.toVirtualNode(receiver: (S) -> Unit): dynamic {
             val (props, on) = this.attributes.toProps(receiver)
             data["props"] = props
             data["on"] = on
+            console.info(data)
             h(
                     this.tagName,
                     data,

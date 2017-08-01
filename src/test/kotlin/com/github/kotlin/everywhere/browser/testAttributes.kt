@@ -21,7 +21,7 @@ class TestAttributes {
     @Test
     fun testClass() {
         val view: (Model) -> Html<Msg> = { _ ->
-            Html.div(Attribute.class_("class"))
+            Html.div(class_("class"))
         }
 
         serialViewTests(view,
@@ -35,14 +35,30 @@ class TestAttributes {
     fun testDisabled() {
         val view: (Model) -> Html<Msg> = { _ ->
             Html.div {
-                input(Attribute.disabled(true))
-                input(Attribute.disabled(false))
+                input(disabled(true))
+                input(disabled(false))
             }
         }
 
         serialViewTests(view,
                 {
                     assertEquals("<input disabled=\"\"><input>", it().children().first().html())
+                }
+        )
+    }
+
+    @Test
+    fun testValue() {
+        val view: (Model) -> Html<Msg> = { _ ->
+            Html.input(value("<script>alert('danger')</script>"))
+        }
+
+        serialViewTests(view,
+                {
+                    assertEquals(
+                            "<script>alert('danger')</script>",
+                            it().children().first().`val`()
+                    )
                 }
         )
     }

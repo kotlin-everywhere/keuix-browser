@@ -25,7 +25,7 @@ class TestEvents {
     @Test
     fun testOnClick() {
         val view: (Model) -> Html<Msg> = { (clicked) ->
-            Html.button(Attribute.onClick(Msg.Clicked)) {
+            Html.button(onClick(Msg.Clicked)) {
                 +(if (clicked) "clicked" else "")
             }
         }
