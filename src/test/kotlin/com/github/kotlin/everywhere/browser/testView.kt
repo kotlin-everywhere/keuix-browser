@@ -116,6 +116,38 @@ class TestView {
         )
     }
 
+    @Test
+    fun testTextarea() {
+        val view: (Model) -> Html<Msg> = { _ ->
+            Html.textarea(text = "<script>alert('danger')</script>")
+        }
+
+        val (container, root) = prepareFixture()
+
+        asyncSerialTest(container, view,
+                {
+                    assertEquals("<textarea>&lt;script&gt;alert('danger')&lt;/script&gt;</textarea>", root().html())
+                }
+        )
+    }
+
+    @Test
+    fun testBuilderTextarea() {
+        val view: (Model) -> Html<Msg> = { _ ->
+            Html.div {
+                textarea(text = "<script>alert('danger')</script>")
+            }
+        }
+
+        val (container, root) = prepareFixture()
+
+        asyncSerialTest(container, view,
+                {
+                    assertEquals("<div><textarea>&lt;script&gt;alert('danger')&lt;/script&gt;</textarea></div>", root().html())
+                }
+        )
+    }
+
     private fun asyncSerialTest(container: Element, view: (Model) -> Html<Msg>, vararg tests: () -> Unit) {
         val lefts = tests.toMutableList()
         return asyncTest { resolve, _ ->
