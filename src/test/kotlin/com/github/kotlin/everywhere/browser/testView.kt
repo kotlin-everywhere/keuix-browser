@@ -148,6 +148,38 @@ class TestView {
         )
     }
 
+    @Test
+    fun testPre() {
+        val view: (Model) -> Html<Msg> = { _ ->
+            Html.pre(text = "<script>alert('danger')</script>")
+        }
+
+        val (container, root) = prepareFixture()
+
+        asyncSerialTest(container, view,
+                {
+                    assertEquals("<pre>&lt;script&gt;alert('danger')&lt;/script&gt;</pre>", root().html())
+                }
+        )
+    }
+
+    @Test
+    fun testBuilderPre() {
+        val view: (Model) -> Html<Msg> = { _ ->
+            Html.div {
+                pre(text = "<script>alert('danger')</script>")
+            }
+        }
+
+        val (container, root) = prepareFixture()
+
+        asyncSerialTest(container, view,
+                {
+                    assertEquals("<div><pre>&lt;script&gt;alert('danger')&lt;/script&gt;</pre></div>", root().html())
+                }
+        )
+    }
+
     private fun asyncSerialTest(container: Element, view: (Model) -> Html<Msg>, vararg tests: () -> Unit) {
         val lefts = tests.toMutableList()
         return asyncTest { resolve, _ ->

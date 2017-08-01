@@ -34,6 +34,10 @@ class HtmlBuilder<S> {
         children.add(Html.textarea(*attributes, text = text))
     }
 
+    fun pre(vararg attributes: Attribute<S>, text: String? = null) {
+        children.add(Html.pre(*attributes, text = text))
+    }
+
     operator fun String.unaryPlus() {
         children.add(Html.text(this))
     }
@@ -65,6 +69,14 @@ sealed class Html<out S> {
 
         fun <S> input(vararg attributes: Attribute<S>): Html<S> {
             return Element("input", attributes.asList(), listOf())
+        }
+
+        fun <S> pre(vararg attributes: Attribute<S>, text: String? = null): Html<S> {
+            return Element(
+                    "pre",
+                    attributes.asList(),
+                    if (text == null) listOf() else listOf(text(text))
+            )
         }
 
         fun <S> text(string: String): Html<S> {
