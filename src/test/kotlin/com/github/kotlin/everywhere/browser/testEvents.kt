@@ -1,12 +1,15 @@
 package com.github.kotlin.everywhere.browser
 
 import org.junit.Test
+import org.w3c.dom.EventInit
+import org.w3c.dom.events.Event
 import kotlin.test.assertEquals
 
 class TestEvents {
-    private data class Model(val clicked: Boolean = false)
+    private data class Model(val clicked: Boolean = false, val inputValue: String = "")
     private sealed class Msg {
         object Clicked : Msg()
+        data class NewInputValue(val inputValue: String) : Msg()
     }
 
     private val init = Model()
@@ -14,6 +17,7 @@ class TestEvents {
     private val update: (Msg, Model) -> Pair<Model, Cmd<Msg>> = { msg, model ->
         val newModel = when (msg) {
             Msg.Clicked -> model.copy(clicked = true)
+            is Msg.NewInputValue -> model.copy(inputValue = msg.inputValue)
         }
         newModel to Cmd.none<Msg>()
     }
@@ -41,4 +45,27 @@ class TestEvents {
                 }
         )
     }
+
+    @Test
+    fun testOnInput() {
+        val view: (Model) -> Html<Msg> = { model ->
+            Html.input(onInput(Msg::NewInputValue), value(model.inputValue))
+        }
+
+        serialViewTests(view,
+                {
+                    assertEquals("", it().children().first().`val`())
+                    it().children().first().`val`("<script>alert('danger')</script>")
+                    it().children().first()[0].dispatchEvent(Event("input", EventInit()))
+                    Unit
+                },
+                {
+                    assertEquals(
+                            "<script>alert('danger')</script>",
+                            it().children().first().`val`()
+                    )
+                }
+        )
+    }
+
 }
