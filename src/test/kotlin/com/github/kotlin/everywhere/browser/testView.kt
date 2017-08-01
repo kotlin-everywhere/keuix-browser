@@ -2,24 +2,18 @@ package com.github.kotlin.everywhere.browser
 
 import com.github.kotlin.everywhere.browser.Attribute.Companion.class_
 import com.github.kotlin.everywhere.browser.Attribute.Companion.disabled
-import com.github.kotlin.everywhere.browser.Attribute.Companion.onClick
 import org.junit.Test
 import kotlin.test.assertEquals
 
 
 class TestView {
     private data class Model(val clicked: Boolean = false)
-    private sealed class Msg {
-        object Clicked : Msg()
-    }
+    private sealed class Msg
 
     private val init = Model()
 
-    private val update: (Msg, Model) -> Pair<Model, Cmd<Msg>> = { msg, model ->
-        val newModel = when (msg) {
-            Msg.Clicked -> model.copy(clicked = true)
-        }
-        newModel to Cmd.none<Msg>()
+    private val update: (Msg, Model) -> Pair<Model, Cmd<Msg>> = { _, model ->
+        model to Cmd.none<Msg>()
     }
 
     private fun serialViewTests(view: (Model) -> Html<Msg>, vararg tests: (root: () -> dynamic) -> Unit) {
@@ -51,26 +45,6 @@ class TestView {
         serialViewTests(view,
                 {
                     assertEquals("<input disabled=\"\"><input>", it().children().first().html())
-                }
-        )
-    }
-
-    @Test
-    fun testEventHandler() {
-        val view: (Model) -> Html<Msg> = { (clicked) ->
-            Html.button(onClick(Msg.Clicked)) {
-                +(if (clicked) "clicked" else "")
-            }
-        }
-
-        serialViewTests(view,
-                {
-                    assertEquals("<button></button>", it().html())
-                    it().children().first().click()
-                    Unit
-                },
-                {
-                    assertEquals("<button>clicked</button>", it().html())
                 }
         )
     }
