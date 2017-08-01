@@ -169,3 +169,11 @@ fun <M, S> runProgram(container: Element, init: M, update: (S, M) -> Pair<M, Cmd
     return Program(container, init, update, view, null)
 }
 
+internal fun <M, S> runBeginnerProgram(container: Element, init: M, update: (S, M) -> M, view: (M) -> Html<S>, onAfterRender: (Element) -> Unit): Program<M, S> {
+    return Program(container, init, { s, m -> update(s, m) to Cmd.none() }, view, onAfterRender)
+}
+
+@Suppress("unused")
+fun <M, S> runBeginnerProgram(container: Element, init: M, update: (S, M) -> M, view: (M) -> Html<S>): Program<M, S> {
+    return Program(container, init, { s, m -> update(s, m) to Cmd.none() }, view, null)
+}

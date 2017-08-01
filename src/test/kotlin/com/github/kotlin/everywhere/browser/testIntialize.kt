@@ -35,4 +35,21 @@ class TestProgram {
             }
         }
     }
+
+    @Test
+    fun testBeginnerProgram() {
+        val fixture = q(fixture())
+        val container = q("<div>").appendTo(fixture)[0] as Element
+
+        val update: (Msg, Model) -> Model = { _, model ->
+            model
+        }
+
+        asyncTest { resolve, _ ->
+            runBeginnerProgram(container, init, update, view) {
+                assertEquals("count = 0", fixture.text())
+                resolve(Unit)
+            }
+        }
+    }
 }
