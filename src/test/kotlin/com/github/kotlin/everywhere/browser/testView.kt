@@ -3,10 +3,7 @@ package com.github.kotlin.everywhere.browser
 import com.github.kotlin.everywhere.browser.Attribute.Companion.class_
 import com.github.kotlin.everywhere.browser.Attribute.Companion.disabled
 import com.github.kotlin.everywhere.browser.Attribute.Companion.onClick
-import com.github.kotlin.everywhere.ktqunit.asyncTest
-import com.github.kotlin.everywhere.ktqunit.fixture
 import org.junit.Test
-import org.w3c.dom.Element
 import kotlin.test.assertEquals
 
 
@@ -25,20 +22,21 @@ class TestView {
         newModel to Cmd.none<Msg>()
     }
 
+    private fun serialViewTests(view: (Model) -> Html<Msg>, vararg tests: (root: () -> dynamic) -> Unit) {
+        asyncSerialTest(init, update, view, *tests)
+    }
+
     @Test
     fun testTextProperty() {
         val view: (Model) -> Html<Msg> = { _ ->
             Html.div(class_("class"))
         }
 
-        val (container, root) = prepareFixture()
-
-        asyncTest { resolve, _ ->
-            runProgram(container, init, update, view) {
-                assertEquals("<div class=\"class\"></div>", root().html())
-                resolve(Unit)
-            }
-        }
+        serialViewTests(view,
+                {
+                    assertEquals("<div class=\"class\"></div>", it().html())
+                }
+        )
     }
 
     @Test
@@ -50,14 +48,11 @@ class TestView {
             }
         }
 
-        val (container, root) = prepareFixture()
-
-        asyncTest { resolve, _ ->
-            runProgram(container, init, update, view) {
-                assertEquals("<input disabled=\"\"><input>", root().children().first().html())
-                resolve(Unit)
-            }
-        }
+        serialViewTests(view,
+                {
+                    assertEquals("<input disabled=\"\"><input>", it().children().first().html())
+                }
+        )
     }
 
     @Test
@@ -68,16 +63,14 @@ class TestView {
             }
         }
 
-        val (container, root) = prepareFixture()
-
-        asyncSerialTest(container, view,
+        serialViewTests(view,
                 {
-                    assertEquals("<button></button>", root().html())
-                    root().children().first().click()
+                    assertEquals("<button></button>", it().html())
+                    it().children().first().click()
                     Unit
                 },
                 {
-                    assertEquals("<button>clicked</button>", root().html())
+                    assertEquals("<button>clicked</button>", it().html())
                 }
         )
     }
@@ -90,11 +83,9 @@ class TestView {
             }
         }
 
-        val (container, root) = prepareFixture()
-
-        asyncSerialTest(container, view,
+        serialViewTests(view,
                 {
-                    assertEquals("<div><div>division</div></div>", root().html())
+                    assertEquals("<div><div>division</div></div>", it().html())
                 }
         )
     }
@@ -107,11 +98,9 @@ class TestView {
             }
         }
 
-        val (container, root) = prepareFixture()
-
-        asyncSerialTest(container, view,
+        serialViewTests(view,
                 {
-                    assertEquals("<div><button>label</button></div>", root().html())
+                    assertEquals("<div><button>label</button></div>", it().html())
                 }
         )
     }
@@ -122,11 +111,9 @@ class TestView {
             Html.textarea(text = "<script>alert('danger')</script>")
         }
 
-        val (container, root) = prepareFixture()
-
-        asyncSerialTest(container, view,
+        serialViewTests(view,
                 {
-                    assertEquals("<textarea>&lt;script&gt;alert('danger')&lt;/script&gt;</textarea>", root().html())
+                    assertEquals("<textarea>&lt;script&gt;alert('danger')&lt;/script&gt;</textarea>", it().html())
                 }
         )
     }
@@ -139,11 +126,9 @@ class TestView {
             }
         }
 
-        val (container, root) = prepareFixture()
-
-        asyncSerialTest(container, view,
+        serialViewTests(view,
                 {
-                    assertEquals("<div><textarea>&lt;script&gt;alert('danger')&lt;/script&gt;</textarea></div>", root().html())
+                    assertEquals("<div><textarea>&lt;script&gt;alert('danger')&lt;/script&gt;</textarea></div>", it().html())
                 }
         )
     }
@@ -154,11 +139,9 @@ class TestView {
             Html.pre(text = "<script>alert('danger')</script>")
         }
 
-        val (container, root) = prepareFixture()
-
-        asyncSerialTest(container, view,
+        serialViewTests(view,
                 {
-                    assertEquals("<pre>&lt;script&gt;alert('danger')&lt;/script&gt;</pre>", root().html())
+                    assertEquals("<pre>&lt;script&gt;alert('danger')&lt;/script&gt;</pre>", it().html())
                 }
         )
     }
@@ -171,34 +154,12 @@ class TestView {
             }
         }
 
-        val (container, root) = prepareFixture()
-
-        asyncSerialTest(container, view,
+        serialViewTests(view,
                 {
-                    assertEquals("<div><pre>&lt;script&gt;alert('danger')&lt;/script&gt;</pre></div>", root().html())
+                    assertEquals("<div><pre>&lt;script&gt;alert('danger')&lt;/script&gt;</pre></div>", it().html())
                 }
         )
     }
 
-    private fun asyncSerialTest(container: Element, view: (Model) -> Html<Msg>, vararg tests: () -> Unit) {
-        val lefts = tests.toMutableList()
-        return asyncTest { resolve, _ ->
-            runProgram(container, init, update, view) {
-                val test = lefts[0]
-                lefts.removeAt(0)
-                test()
 
-                if (lefts.isEmpty()) {
-                    resolve(Unit)
-                }
-            }
-        }
-    }
-
-    private fun prepareFixture(): Pair<Element, () -> dynamic> {
-        val fixture = q(fixture())
-        val container = q("<div>").appendTo(fixture)[0] as Element
-        val root = { fixture.children().first() }
-        return container to root
-    }
 }
