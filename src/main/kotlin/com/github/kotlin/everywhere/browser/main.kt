@@ -125,6 +125,11 @@ fun <S> value(value: String): Attribute<S> {
     return Attribute.TextProperty("value", value)
 }
 
+
+fun <S> style(style: String): Attribute<S> {
+    return Attribute.TextProperty("style", style)
+}
+
 private fun <S> List<Attribute<S>>.toProps(receiver: (S) -> Unit): Pair<dynamic, dynamic> {
     val props: dynamic = object {}
     val on: dynamic = object {}

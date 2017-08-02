@@ -62,4 +62,16 @@ class TestAttributes {
                 }
         )
     }
+
+    @Test
+    fun testStyle() {
+        serialViewTests(
+                {
+                    Html.div(style("font-weight: bold;"))
+                },
+                {
+                    assertEquals("bold", it().children().first().css("font-weight"))
+                }
+        )
+    }
 }
