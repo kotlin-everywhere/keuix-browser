@@ -1,4 +1,4 @@
-package com.github.kotlin.everywhere.browser
+package com.minek.kotlin.everywhere.keuix.browser
 
 @JsModule("snabbdom")
 private external object SnabbdomJs {

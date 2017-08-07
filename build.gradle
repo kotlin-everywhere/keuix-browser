@@ -22,6 +22,7 @@ compileTestKotlin2Js {
     kotlinOptions.moduleKind = "commonjs"
     kotlinOptions.sourceMap = true
     kotlinOptions.main = "noCall"
+    kotlinOptions.outputFile = "$project.buildDir.path/classes/test/${project.name}-test.js"
 }
 
 apply plugin: 'maven'
@@ -33,7 +34,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
-    compile 'com.github.kotlin-everywhere:ktqunit:968cdccfee6b457ac3892fc7f52e30b7d2f1fb85'
+    compile 'com.github.kotlin-everywhere:keduct-qunit:5804592f6d201e752bc5276e13435a6e2317047f'
     testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
 }
 

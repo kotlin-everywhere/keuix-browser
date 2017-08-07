@@ -1,7 +1,10 @@
-package com.github.kotlin.everywhere.browser
+package com.minek.kotlin.everywhere
 
-import com.github.kotlin.everywhere.ktqunit.asyncTest
-import com.github.kotlin.everywhere.ktqunit.fixture
+import com.minek.kotlin.everywhere.keduct.qunit.asyncTest
+import com.minek.kotlin.everywhere.keduct.qunit.fixture
+import com.minek.kotlin.everywhere.keuix.browser.Cmd
+import com.minek.kotlin.everywhere.keuix.browser.Html
+import com.minek.kotlin.everywhere.keuix.browser.runProgram
 import org.w3c.dom.Element
 
 

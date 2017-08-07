@@ -1,1 +1,1 @@
-require('../build/classes/test/ktbrowser_test');
+require('../build/classes/test/keuix-browser-test');

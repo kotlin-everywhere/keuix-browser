@@ -1,5 +1,6 @@
-package com.github.kotlin.everywhere.browser
+package com.minek.kotlin.everywhere
 
+import com.minek.kotlin.everywhere.keuix.browser.*
 import org.junit.Test
 import org.w3c.dom.EventInit
 import org.w3c.dom.events.Event

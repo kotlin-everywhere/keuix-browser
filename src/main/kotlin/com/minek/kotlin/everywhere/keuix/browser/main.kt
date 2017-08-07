@@ -1,6 +1,6 @@
-package com.github.kotlin.everywhere.browser
+package com.minek.kotlin.everywhere.keuix.browser
 
-import com.github.kotlin.everywhere.browser.Snabbdom.h
+import com.minek.kotlin.everywhere.keuix.browser.Snabbdom.h
 import org.w3c.dom.Element
 import org.w3c.dom.events.Event
 import kotlin.browser.window
