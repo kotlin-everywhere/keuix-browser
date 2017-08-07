@@ -5,6 +5,7 @@ import org.w3c.dom.Element
 import org.w3c.dom.events.Event
 import kotlin.browser.window
 
+@Suppress("unused")
 sealed class Cmd<out S> {
     companion object {
         fun <S> none(): Cmd<S> {
@@ -45,6 +46,7 @@ class HtmlBuilder<S> {
 
 typealias HtmlBuilderInit<S> = HtmlBuilder<S>.() -> Unit
 
+@Suppress("unused")
 sealed class Html<out S> {
     companion object {
         fun <S> button(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
@@ -96,6 +98,7 @@ sealed class Html<out S> {
     internal class Element<out S>(val tagName: String, val attributes: List<Attribute<S>>, val children: List<Html<S>>) : Html<S>()
 }
 
+@Suppress("unused")
 sealed class Attribute<out S> {
     class TextProperty<out S>(val name: String, val value: String) : Attribute<S>()
     class BooleanProperty<out S>(val name: String, val value: Boolean) : Attribute<S>()
