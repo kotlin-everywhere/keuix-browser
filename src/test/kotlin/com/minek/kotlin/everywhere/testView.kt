@@ -22,13 +22,12 @@ class TestView {
 
     @Test
     fun testBuilderDiv() {
-        val view: (Model) -> Html<Msg> = { _ ->
-            Html.div {
-                div { +"division" }
-            }
-        }
-
-        serialViewTests(view,
+        serialViewTests(
+                { _ ->
+                    Html.div {
+                        div { +"division" }
+                    }
+                },
                 {
                     assertEquals("<div><div>division</div></div>", it().html())
                 }
@@ -37,13 +36,12 @@ class TestView {
 
     @Test
     fun testBuilderButton() {
-        val view: (Model) -> Html<Msg> = { _ ->
-            Html.div {
-                button { +"label" }
-            }
-        }
-
-        serialViewTests(view,
+        serialViewTests(
+                { _ ->
+                    Html.div {
+                        button { +"label" }
+                    }
+                },
                 {
                     assertEquals("<div><button>label</button></div>", it().html())
                 }
@@ -52,11 +50,10 @@ class TestView {
 
     @Test
     fun testTextarea() {
-        val view: (Model) -> Html<Msg> = { _ ->
-            Html.textarea(text = "<script>alert('danger')</script>")
-        }
-
-        serialViewTests(view,
+        serialViewTests(
+                { _ ->
+                    Html.textarea(text = "<script>alert('danger')</script>")
+                },
                 {
                     assertEquals("<textarea>&lt;script&gt;alert('danger')&lt;/script&gt;</textarea>", it().html())
                 }
@@ -65,13 +62,12 @@ class TestView {
 
     @Test
     fun testBuilderTextarea() {
-        val view: (Model) -> Html<Msg> = { _ ->
-            Html.div {
-                textarea(text = "<script>alert('danger')</script>")
-            }
-        }
-
-        serialViewTests(view,
+        serialViewTests(
+                { _ ->
+                    Html.div {
+                        textarea(text = "<script>alert('danger')</script>")
+                    }
+                },
                 {
                     assertEquals("<div><textarea>&lt;script&gt;alert('danger')&lt;/script&gt;</textarea></div>", it().html())
                 }
@@ -80,11 +76,10 @@ class TestView {
 
     @Test
     fun testPre() {
-        val view: (Model) -> Html<Msg> = { _ ->
-            Html.pre(text = "<script>alert('danger')</script>")
-        }
-
-        serialViewTests(view,
+        serialViewTests(
+                { _ ->
+                    Html.pre(text = "<script>alert('danger')</script>")
+                },
                 {
                     assertEquals("<pre>&lt;script&gt;alert('danger')&lt;/script&gt;</pre>", it().html())
                 }
@@ -93,13 +88,12 @@ class TestView {
 
     @Test
     fun testBuilderPre() {
-        val view: (Model) -> Html<Msg> = { _ ->
-            Html.div {
-                pre(text = "<script>alert('danger')</script>")
-            }
-        }
-
-        serialViewTests(view,
+        serialViewTests(
+                { _ ->
+                    Html.div {
+                        pre(text = "<script>alert('danger')</script>")
+                    }
+                },
                 {
                     assertEquals("<div><pre>&lt;script&gt;alert('danger')&lt;/script&gt;</pre></div>", it().html())
                 }

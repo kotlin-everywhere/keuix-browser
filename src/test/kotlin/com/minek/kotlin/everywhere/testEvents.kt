@@ -29,13 +29,12 @@ class TestEvents {
 
     @Test
     fun testOnClick() {
-        val view: (Model) -> Html<Msg> = { (clicked) ->
-            Html.button(onClick(Msg.Clicked)) {
-                +(if (clicked) "clicked" else "")
-            }
-        }
-
-        serialViewTests(view,
+        serialViewTests(
+                { (clicked) ->
+                    Html.button(onClick(Msg.Clicked)) {
+                        +(if (clicked) "clicked" else "")
+                    }
+                },
                 {
                     assertEquals("<button></button>", it().html())
                     it().children().first().click()
@@ -49,11 +48,10 @@ class TestEvents {
 
     @Test
     fun testOnInput() {
-        val view: (Model) -> Html<Msg> = { model ->
-            Html.input(onInput(Msg::NewInputValue), value(model.inputValue))
-        }
-
-        serialViewTests(view,
+        serialViewTests(
+                { model ->
+                    Html.input(onInput(Msg::NewInputValue), value(model.inputValue))
+                },
                 {
                     assertEquals("", it().children().first().`val`())
                     it().children().first().`val`("<script>alert('danger')</script>")
