@@ -56,4 +56,17 @@ class TestProgram {
             }
         }
     }
+
+    @Test
+    fun testBeginnerViewProgram() {
+        val fixture = q(fixture())
+        val container = q("<div>").appendTo(fixture)[0] as Element
+
+        asyncTest { resolve, _ ->
+            runBeginnerProgram(container, { Html.text("beginnerViewProgram") }) {
+                assertEquals("beginnerViewProgram", fixture.text())
+                resolve(Unit)
+            }
+        }
+    }
 }
