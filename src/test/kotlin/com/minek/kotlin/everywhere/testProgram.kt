@@ -63,7 +63,7 @@ class TestProgram {
         val container = q("<div>").appendTo(fixture)[0] as Element
 
         asyncTest { resolve, _ ->
-            runBeginnerProgram(container, { Html.text("beginnerViewProgram") }) {
+            runBeginnerProgram(container, Html.text("beginnerViewProgram")) {
                 assertEquals("beginnerViewProgram", fixture.text())
                 resolve(Unit)
             }
