@@ -1,6 +1,7 @@
 package com.minek.kotlin.everywhere
 
-import com.minek.kotlin.everywhere.keuix.browser.*
+import com.minek.kotlin.everywhere.keuix.browser.Cmd
+import com.minek.kotlin.everywhere.keuix.browser.Update
 import com.minek.kotlin.everywhere.keuix.browser.html.Html
 import com.minek.kotlin.everywhere.keuix.browser.html.onClick
 import com.minek.kotlin.everywhere.keuix.browser.html.onInput
@@ -19,12 +20,12 @@ class TestEvents {
 
     private val init = Model()
 
-    private val update: (Msg, Model) -> Pair<Model, Cmd<Msg>> = { msg, model ->
+    private val update: Update<Model, Msg> = { msg, model ->
         val newModel = when (msg) {
             Msg.Clicked -> model.copy(clicked = true)
             is Msg.NewInputValue -> model.copy(inputValue = msg.inputValue)
         }
-        newModel to Cmd.none<Msg>()
+        newModel to null
     }
 
     private fun serialViewTests(view: (Model) -> Html<Msg>, vararg tests: (root: () -> dynamic) -> Unit) {

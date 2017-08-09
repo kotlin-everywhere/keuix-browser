@@ -2,7 +2,7 @@ package com.minek.kotlin.everywhere
 
 import com.minek.kotlin.everywhere.keduct.qunit.asyncTest
 import com.minek.kotlin.everywhere.keduct.qunit.fixture
-import com.minek.kotlin.everywhere.keuix.browser.Cmd
+import com.minek.kotlin.everywhere.keuix.browser.Update
 import com.minek.kotlin.everywhere.keuix.browser.html.Html
 import com.minek.kotlin.everywhere.keuix.browser.runBeginnerProgram
 import com.minek.kotlin.everywhere.keuix.browser.runProgram
@@ -15,8 +15,8 @@ private sealed class Msg
 
 private val init = Model()
 
-private val update: (Msg, Model) -> Pair<Model, Cmd<Msg>> = { _, model ->
-    model to Cmd.none<Msg>()
+private val update: Update<Model, Msg> = { _, model ->
+    model to null
 }
 
 private val view: (Model) -> Html<Msg> = { (count) ->

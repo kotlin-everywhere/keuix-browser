@@ -1,6 +1,6 @@
 package com.minek.kotlin.everywhere
 
-import com.minek.kotlin.everywhere.keuix.browser.*
+import com.minek.kotlin.everywhere.keuix.browser.Update
 import com.minek.kotlin.everywhere.keuix.browser.html.*
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -11,8 +11,8 @@ class TestAttributes {
 
     private val init = Model()
 
-    private val update: (Msg, Model) -> Pair<Model, Cmd<Msg>> = { _, model ->
-        model to Cmd.none<Msg>()
+    private val update: Update<Model, Msg> = { _, model ->
+        model to null
     }
 
     private fun serialViewTests(view: (Model) -> Html<Msg>, vararg tests: (root: () -> dynamic) -> Unit) {

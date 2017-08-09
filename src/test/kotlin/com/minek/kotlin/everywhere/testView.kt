@@ -12,8 +12,8 @@ class TestView {
 
     private val init = Model()
 
-    private val update: (Msg, Model) -> Pair<Model, Cmd<Msg>> = { _, model ->
-        model to Cmd.none<Msg>()
+    private val update: (Msg, Model) -> Pair<Model, Cmd<Msg>?> = { _, model ->
+        model to null
     }
 
     private fun serialViewTests(view: (Model) -> Html<Msg>, vararg tests: (root: () -> dynamic) -> Unit) {
@@ -35,13 +35,19 @@ class TestView {
     }
 
     @Test
+    fun testButton() {
+        serialViewTests(
+                { _ -> Html.button(text = "label") },
+                {
+                    assertEquals("<button>label</button>", it().html())
+                }
+        )
+    }
+
+    @Test
     fun testBuilderButton() {
         serialViewTests(
-                { _ ->
-                    Html.div {
-                        button { +"label" }
-                    }
-                },
+                { _ -> Html.div { button(text = "label") } },
                 {
                     assertEquals("<div><button>label</button></div>", it().html())
                 }
