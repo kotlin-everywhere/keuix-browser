@@ -90,31 +90,3 @@ sealed class Attribute<out S> {
     class BooleanProperty<out S>(val name: String, val value: Boolean) : Attribute<S>()
     class EventHandler<out S>(val name: String, val value: (Event) -> S) : Attribute<S>()
 }
-
-fun <S> class_(class_: String): Attribute<S> {
-    return Attribute.TextProperty("className", class_)
-}
-
-fun <S> disabled(disabled: Boolean): Attribute<S> {
-    return Attribute.BooleanProperty("disabled", disabled)
-}
-
-fun <S> onClick(msg: S): Attribute<S> {
-    return Attribute.EventHandler("click") { msg }
-}
-
-fun <S> onInput(tagger: (String) -> S): Attribute<S> {
-    return Attribute.EventHandler("input") {
-        val target: dynamic = it.target
-        tagger(target.value as String)
-    }
-}
-
-fun <S> value(value: String): Attribute<S> {
-    return Attribute.TextProperty("value", value)
-}
-
-
-fun <S> style(style: String): Attribute<S> {
-    return Attribute.TextProperty("style", style)
-}
