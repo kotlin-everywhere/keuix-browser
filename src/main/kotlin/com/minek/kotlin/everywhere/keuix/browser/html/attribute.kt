@@ -18,3 +18,7 @@ fun <S> value(value: String): Attribute<S> {
 fun <S> style(style: String): Attribute<S> {
     return Attribute.TextProperty("style", style)
 }
+
+fun <S> dynamic(name: String, value :String): Attribute<S> {
+    return Attribute.TextProperty(name, value)
+}
