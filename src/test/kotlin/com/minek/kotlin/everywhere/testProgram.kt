@@ -3,7 +3,7 @@ package com.minek.kotlin.everywhere
 import com.minek.kotlin.everywhere.keduct.qunit.asyncTest
 import com.minek.kotlin.everywhere.keduct.qunit.fixture
 import com.minek.kotlin.everywhere.keuix.browser.Cmd
-import com.minek.kotlin.everywhere.keuix.browser.Html
+import com.minek.kotlin.everywhere.keuix.browser.html.Html
 import com.minek.kotlin.everywhere.keuix.browser.runBeginnerProgram
 import com.minek.kotlin.everywhere.keuix.browser.runProgram
 import org.junit.Test

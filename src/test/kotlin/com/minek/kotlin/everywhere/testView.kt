@@ -1,7 +1,7 @@
 package com.minek.kotlin.everywhere
 
 import com.minek.kotlin.everywhere.keuix.browser.Cmd
-import com.minek.kotlin.everywhere.keuix.browser.Html
+import com.minek.kotlin.everywhere.keuix.browser.html.Html
 import org.junit.Test
 import kotlin.test.assertEquals
 

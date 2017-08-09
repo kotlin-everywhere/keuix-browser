@@ -1,6 +1,10 @@
 package com.minek.kotlin.everywhere
 
 import com.minek.kotlin.everywhere.keuix.browser.*
+import com.minek.kotlin.everywhere.keuix.browser.html.Html
+import com.minek.kotlin.everywhere.keuix.browser.html.onClick
+import com.minek.kotlin.everywhere.keuix.browser.html.onInput
+import com.minek.kotlin.everywhere.keuix.browser.html.value
 import org.junit.Test
 import org.w3c.dom.EventInit
 import org.w3c.dom.events.Event
