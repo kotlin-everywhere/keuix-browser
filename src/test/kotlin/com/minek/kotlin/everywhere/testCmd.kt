@@ -1,6 +1,6 @@
 package com.minek.kotlin.everywhere
 
-import com.minek.kotlin.everywhere.TestCmd.CounterMsg.NewCount
+import com.minek.kotlin.everywhere.TestCmd.CounterMsg.New
 import com.minek.kotlin.everywhere.keduct.bluebird.Bluebird
 import com.minek.kotlin.everywhere.keuix.browser.Cmd
 import com.minek.kotlin.everywhere.keuix.browser.Update
@@ -12,8 +12,8 @@ import kotlin.test.assertEquals
 
 class TestCmd {
     private sealed class CounterMsg {
-        object NextValue : CounterMsg()
-        data class NewCount(val count: Int) : CounterMsg()
+        object Next : CounterMsg()
+        data class New(val count: Int) : CounterMsg()
     }
 
     @Test
@@ -27,13 +27,13 @@ class TestCmd {
         val update: Update<Int, CounterMsg> = { msg, model ->
             console.info(msg, model)
             when (msg) {
-                CounterMsg.NextValue -> model to count(::NewCount)
-                is TestCmd.CounterMsg.NewCount -> msg.count to null
+                CounterMsg.Next -> model to count(::New)
+                is TestCmd.CounterMsg.New -> msg.count to null
             }
         }
 
         val view: View<Int, CounterMsg> = { model ->
-            Html.button(onClick(CounterMsg.NextValue), text = "$model")
+            Html.button(onClick(CounterMsg.Next), text = "$model")
         }
 
         asyncSerialTest(0, update, view,
