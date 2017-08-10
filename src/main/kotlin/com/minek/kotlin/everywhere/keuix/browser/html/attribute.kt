@@ -12,6 +12,11 @@ fun <S> dynamic(name: String, value :String): Attribute<S> {
 fun <S> dataset(name: String, value :String): Attribute<S> {
     return Attribute.DatasetProperty(name, value)
 }
+
+fun <S> href(url :String): Attribute<S> {
+    return Attribute.TextProperty("href", url)
+}
+
 fun <S> disabled(disabled: Boolean): Attribute<S> {
     return Attribute.BooleanProperty("disabled", disabled)
 }

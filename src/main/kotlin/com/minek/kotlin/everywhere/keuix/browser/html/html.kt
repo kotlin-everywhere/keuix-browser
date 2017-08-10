@@ -29,6 +29,10 @@ class HtmlBuilder<S> {
         children.add(Html.span(*attributes, text = text, init = init))
     }
 
+    fun a(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null) {
+        children.add(Html.a(*attributes, text = text, init = init))
+    }
+
     operator fun String.unaryPlus() {
         children.add(Html.text(this))
     }
@@ -61,6 +65,14 @@ sealed class Html<out S> {
             val children: List<Html<S>> = if (init != null) HtmlBuilder<S>().apply(init).children else listOf()
             return Element(
                     "span", attributes.asList(),
+                    if (text != null) listOf(text<S>(text)) + children else children
+            )
+        }
+
+        fun <S> a(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null): Html<S> {
+            val children: List<Html<S>> = if (init != null) HtmlBuilder<S>().apply(init).children else listOf()
+            return Element(
+                    "a", attributes.asList(),
                     if (text != null) listOf(text<S>(text)) + children else children
             )
         }

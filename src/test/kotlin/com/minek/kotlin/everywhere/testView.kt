@@ -106,5 +106,43 @@ class TestView {
         )
     }
 
+    @Test
+    fun testSpan() {
+        serialViewTests(
+                { _ -> Html.span(text = "label") },
+                {
+                    assertEquals("<span>label</span>", it().html())
+                }
+        )
+    }
 
+    @Test
+    fun testBuilderSpan() {
+        serialViewTests(
+                { _ -> Html.div { span(text = "label") } },
+                {
+                    assertEquals("<div><span>label</span></div>", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testBuilderA() {
+        serialViewTests(
+                { _ -> Html.div { a(text = "label") } },
+                {
+                    assertEquals("<div><a>label</a></div>", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testA() {
+        serialViewTests(
+                { _ -> Html.a(text = "label") },
+                {
+                    assertEquals("<a>label</a>", it().html())
+                }
+        )
+    }
 }

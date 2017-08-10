@@ -69,4 +69,16 @@ class TestAttributes {
                 }
         )
     }
+
+    @Test
+    fun testHref() {
+        serialViewTests(
+                {
+                    Html.a(href( "https://github.com"))
+                },
+                {
+                    assertEquals("<a href=\"https://github.com\"></a>", it().html())
+                }
+        )
+    }
 }
