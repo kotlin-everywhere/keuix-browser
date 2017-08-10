@@ -19,6 +19,21 @@ class TestAttributes {
         asyncSerialTest(init, update, view, *tests)
     }
 
+    @Test
+    fun testDataset() {
+        serialViewTests(
+                { Html.div(dataset("test", "1234")) },
+                { assertEquals("<div data-test=\"1234\"></div>", it().html()) }
+        )
+    }
+
+    @Test
+    fun testDynamic() {
+        serialViewTests(
+                { Html.div(dynamic("data-test", "1234")) },
+                { assertEquals("<div data-test=\"1234\"></div>", it().html()) }
+        )
+    }
 
     @Test
     fun testClass() {

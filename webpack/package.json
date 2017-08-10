@@ -11,6 +11,6 @@
   },
   "dependencies": {
     "jquery": "^3.2.1",
-    "snabbdom": "^0.6.9"
+    "snabbdom": "^0.7.0"
   }
 }

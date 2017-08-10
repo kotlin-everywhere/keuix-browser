@@ -10,6 +10,16 @@ private external object SnabbdomJsModulesProps {
     val default: dynamic
 }
 
+@JsModule("snabbdom/modules/attributes")
+private external object SnabbdomJsModulesAttributes {
+    val default: dynamic
+}
+
+@JsModule("snabbdom/modules/dataset")
+private external object SnabbdomJsModulesDataset {
+    val default: dynamic
+}
+
 @JsModule("snabbdom/modules/eventlisteners")
 private external object SnabbdomJsModulesEventListeners {
     val default: dynamic
@@ -36,7 +46,7 @@ internal object Snabbdom {
 
 
         return SnabbdomJs.init(
-                arrayOf(SnabbdomJsModulesProps.default, SnabbdomJsModulesEventListeners.default, hookModule)
+                arrayOf(SnabbdomJsModulesProps.default, SnabbdomJsModulesAttributes.default, SnabbdomJsModulesDataset.default, SnabbdomJsModulesEventListeners.default, hookModule)
                         .filterNotNull()
                         .toTypedArray()
         )
