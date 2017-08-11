@@ -17,6 +17,10 @@ fun <S> href(url :String): Attribute<S> {
     return Attribute.TextProperty("href", url)
 }
 
+fun <S> src(url :String): Attribute<S> {
+    return Attribute.TextProperty("src", url)
+}
+
 fun <S> disabled(disabled: Boolean): Attribute<S> {
     return Attribute.BooleanProperty("disabled", disabled)
 }

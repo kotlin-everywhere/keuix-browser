@@ -33,6 +33,10 @@ class HtmlBuilder<S> {
         children.add(Html.a(*attributes, text = text, init = init))
     }
 
+    fun img(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null) {
+        children.add(Html.img(*attributes, init = init))
+    }
+
     operator fun String.unaryPlus() {
         children.add(Html.text(this))
     }
@@ -74,6 +78,14 @@ sealed class Html<out S> {
             return Element(
                     "a", attributes.asList(),
                     if (text != null) listOf(text<S>(text)) + children else children
+            )
+        }
+
+        fun <S> img(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
+            val children: List<Html<S>> = if (init != null) HtmlBuilder<S>().apply(init).children else listOf()
+            return Element(
+                    "img", attributes.asList(),
+                    children
             )
         }
 
