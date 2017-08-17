@@ -18,16 +18,20 @@ private fun prepareFixture(): Pair<Element, () -> dynamic> {
 internal fun <M, S> asyncSerialTest(init: M, update: Update<M, S>, view: View<M, S>, vararg tests: (root: () -> dynamic) -> Unit) {
     val (container, root) = prepareFixture()
     val lefts = tests.toMutableList()
-    return asyncTest { resolve, _ ->
+    return asyncTest { resolve, reject ->
         runProgram(container, init, update, view) {
-            if (lefts.isNotEmpty()) {
-                val test = lefts[0]
-                lefts.removeAt(0)
-                test(root)
-            }
+            try {
+                if (lefts.isNotEmpty()) {
+                    val test = lefts[0]
+                    lefts.removeAt(0)
+                    test(root)
+                }
 
-            if (lefts.isEmpty()) {
-                resolve(Unit)
+                if (lefts.isEmpty()) {
+                    resolve(Unit)
+                }
+            } catch (e: dynamic) {
+                reject(e)
             }
         }
     }

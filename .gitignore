@@ -5,3 +5,4 @@ build/
 #intellj
 .idea/
 *.iml
+out/
