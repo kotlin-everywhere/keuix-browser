@@ -20,10 +20,18 @@ private external fun fetch(url: String, options: dynamic): Promise<Any?>
 abstract class Crate {
     internal var remote: String = "http://localhost:5000"
     internal val url: String
-        get() = remote
+        get() {
+            val parent = parent
+            return if (parent == null) remote else parent.first.url + "/" + parent.second
+        }
+    private var parent: Pair<Crate, String>? = null
 
     fun <P, R> e(parameterConvert: Converter<P>, resultConverter: Converter<R>): EndPoint.Delegate<P, R> {
         return EndPoint.Delegate(this, parameterConvert, resultConverter)
+    }
+
+    fun <C : Crate> c(constructor: () -> C): Delegate<C> {
+        return Delegate(constructor)
     }
 
     fun i(remote: String = "http://localhost:5000") {
@@ -31,6 +39,17 @@ abstract class Crate {
             throw IllegalArgumentException("remote should not ends with /")
         }
         this.remote = remote
+    }
+
+    class Delegate<out C : Crate>(private val constructor: () -> C) : ReadOnlyProperty<Crate, C> {
+        private var crate: C? = null
+
+        override fun getValue(thisRef: Crate, property: KProperty<*>): C {
+            return crate ?: constructor().apply {
+                crate = this
+                parent = thisRef to property.name
+            }
+        }
     }
 }
 

@@ -21,9 +21,9 @@ class CorsFilter : org.springframework.web.filter.CorsFilter(buildCorsConfigurat
 
 fun main(args: Array<String>) {
     val testCrate = TestCrate().apply {
-        add { (first, second) ->
-            first + second
-        }
+        add { (first, second) -> first + second }
+
+        inner.flip { !it }
     }
 
     testCrate.runServer(8000, filters = listOf(CorsFilter()))

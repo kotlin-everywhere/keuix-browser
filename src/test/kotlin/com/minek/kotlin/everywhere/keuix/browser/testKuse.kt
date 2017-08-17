@@ -21,4 +21,11 @@ class TestKeuse {
             assertEquals(Ok(3), it)
         })
     }
+
+    @Test
+    fun testNested() {
+        asyncTest(testCrate.inner.flip(false, { it }).fetch().then {
+            assertEquals(Ok(true), it)
+        })
+    }
 }
