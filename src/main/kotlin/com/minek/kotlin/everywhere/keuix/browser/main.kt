@@ -115,6 +115,6 @@ internal fun runBeginnerProgram(container: Element, view: Html<Unit>, onAfterRen
 }
 
 @Suppress("unused")
-internal fun runBeginnerProgram(container: Element, view: Html<Unit>): Program<Unit, Unit> {
+fun runBeginnerProgram(container: Element, view: Html<Unit>): Program<Unit, Unit> {
     return Program(container, Unit, { _, _ -> Unit to null }, { view }, null)
 }
