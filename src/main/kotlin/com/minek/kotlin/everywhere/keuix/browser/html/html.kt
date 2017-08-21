@@ -28,6 +28,10 @@ class HtmlBuilder<S> {
     operator fun String.unaryPlus() {
         children.add(Html.text(this))
     }
+
+    operator fun Html<S>.unaryPlus() {
+        children.add(this)
+    }
 }
 
 typealias HtmlBuilderInit<S> = HtmlBuilder<S>.() -> Unit

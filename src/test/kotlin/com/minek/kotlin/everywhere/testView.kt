@@ -21,6 +21,20 @@ class TestView {
     }
 
     @Test
+    fun testUnary() {
+        serialViewTests(
+                { _ ->
+                    Html.div {
+                        +Html.div<Msg> {
+                            +Html.text<Msg>("text")
+                        }
+                    }
+                },
+                { assertEquals("<div><div>text</div></div>", it().html()) }
+        )
+    }
+
+    @Test
     fun testBuilderDiv() {
         serialViewTests(
                 { _ ->
@@ -28,9 +42,7 @@ class TestView {
                         div { +"division" }
                     }
                 },
-                {
-                    assertEquals("<div><div>division</div></div>", it().html())
-                }
+                { assertEquals("<div><div>division</div></div>", it().html()) }
         )
     }
 
@@ -38,9 +50,7 @@ class TestView {
     fun testButton() {
         serialViewTests(
                 { _ -> Html.button(text = "label") },
-                {
-                    assertEquals("<button>label</button>", it().html())
-                }
+                { assertEquals("<button>label</button>", it().html()) }
         )
     }
 
@@ -48,9 +58,7 @@ class TestView {
     fun testBuilderButton() {
         serialViewTests(
                 { _ -> Html.div { button(text = "label") } },
-                {
-                    assertEquals("<div><button>label</button></div>", it().html())
-                }
+                { assertEquals("<div><button>label</button></div>", it().html()) }
         )
     }
 
@@ -60,9 +68,7 @@ class TestView {
                 { _ ->
                     Html.textarea(text = "<script>alert('danger')</script>")
                 },
-                {
-                    assertEquals("<textarea>&lt;script&gt;alert('danger')&lt;/script&gt;</textarea>", it().html())
-                }
+                { assertEquals("<textarea>&lt;script&gt;alert('danger')&lt;/script&gt;</textarea>", it().html()) }
         )
     }
 
@@ -74,9 +80,7 @@ class TestView {
                         textarea(text = "<script>alert('danger')</script>")
                     }
                 },
-                {
-                    assertEquals("<div><textarea>&lt;script&gt;alert('danger')&lt;/script&gt;</textarea></div>", it().html())
-                }
+                { assertEquals("<div><textarea>&lt;script&gt;alert('danger')&lt;/script&gt;</textarea></div>", it().html()) }
         )
     }
 
@@ -86,9 +90,7 @@ class TestView {
                 { _ ->
                     Html.pre(text = "<script>alert('danger')</script>")
                 },
-                {
-                    assertEquals("<pre>&lt;script&gt;alert('danger')&lt;/script&gt;</pre>", it().html())
-                }
+                { assertEquals("<pre>&lt;script&gt;alert('danger')&lt;/script&gt;</pre>", it().html()) }
         )
     }
 
@@ -100,9 +102,7 @@ class TestView {
                         pre(text = "<script>alert('danger')</script>")
                     }
                 },
-                {
-                    assertEquals("<div><pre>&lt;script&gt;alert('danger')&lt;/script&gt;</pre></div>", it().html())
-                }
+                { assertEquals("<div><pre>&lt;script&gt;alert('danger')&lt;/script&gt;</pre></div>", it().html()) }
         )
     }
 
