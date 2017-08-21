@@ -13,8 +13,8 @@ class TestCrate : Crate() {
 
     data class AddReq(val first: Int, val second: Int) {
         companion object {
-            val decoder = map(Decoders.field("first", Decoders.int), Decoders.field("second", Decoders.int), ::AddReq)
-            val encoder = { (first, second): AddReq ->
+            private val decoder = map(Decoders.field("first", Decoders.int), Decoders.field("second", Decoders.int), ::AddReq)
+            private val encoder = { (first, second): AddReq ->
                 Encoders.object_("first" to Encoders.int(first), "second" to Encoders.int(second))
             }
             val converter = encoder to decoder
