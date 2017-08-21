@@ -22,6 +22,10 @@ private fun <S> List<Attribute<S>>.toProps(receiver: (S) -> Unit): Pair<dynamic,
     return Pair(props, on)
 }
 
+private fun <S, P> tagVirtualNode(tagger: Html.Tagger<S, P>, receiver: (S) -> Unit): dynamic {
+    return tagger.html.toVirtualNode { p -> receiver(tagger.tagger(p)) }
+}
+
 private fun <S> Html<S>.toVirtualNode(receiver: (S) -> Unit): dynamic {
     return when (this) {
         is Html.Text -> this.text
@@ -41,6 +45,7 @@ private fun <S> Html<S>.toVirtualNode(receiver: (S) -> Unit): dynamic {
                             .toTypedArray()
             )
         }
+        is Html.Tagger<S, *> -> tagVirtualNode(this, receiver)
     }
 }
 
@@ -61,7 +66,6 @@ class Program<M, S>(private val container: Element, init: M,
             model = newModel
             requestAnimationFrameId = window.requestAnimationFrame(_updateView)
         }
-        console.info(newModel, cmd)
         if (cmd != null) {
             handleCmd(cmd)
         }

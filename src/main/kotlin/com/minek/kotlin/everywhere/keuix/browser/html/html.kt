@@ -80,10 +80,15 @@ sealed class Html<out S> {
                     if (text == null) listOf() else listOf(text(text))
             )
         }
+
+        fun <a, msg> map(tagger: (a) -> msg, html: Html<a>): Html<msg> {
+            return Tagger(tagger, html)
+        }
     }
 
     internal class Text<out S>(val text: String) : Html<S>()
     internal class Element<out S>(val tagName: String, val attributes: List<Attribute<S>>, val children: List<Html<S>>) : Html<S>()
+    internal class Tagger<out S, P>(val tagger: (P) -> S, val html: Html<P>) : Html<S>()
 }
 
 @Suppress("unused")
