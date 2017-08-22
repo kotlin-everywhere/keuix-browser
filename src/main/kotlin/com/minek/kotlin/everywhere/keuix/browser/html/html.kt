@@ -17,6 +17,10 @@ class HtmlBuilder<S> {
         children.add(Html.input(*attributes))
     }
 
+    fun section(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null){
+        children.add(Html.section(*attributes, init = init))
+    }
+
     fun textarea(vararg attributes: Attribute<S>, text: String? = null) {
         children.add(Html.textarea(*attributes, text = text))
     }
@@ -58,6 +62,17 @@ sealed class Html<out S> {
         fun <S> div(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
             return Element(
                     "div", attributes.asList(),
+                    if (init != null)
+                        HtmlBuilder<S>().apply(init).children
+                    else
+                        listOf()
+            )
+        }
+
+
+        fun <S> section(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
+            return Element(
+                    "section", attributes.asList(),
                     if (init != null)
                         HtmlBuilder<S>().apply(init).children
                     else

@@ -5,7 +5,7 @@ fun <S> class_(class_: String): Attribute<S> {
     return Attribute.TextProperty("class", class_)
 }
 
-fun <S> dynamic(name: String, value :String): Attribute<S> {
+fun <S> attribute(name: String, value :String): Attribute<S> {
     return Attribute.TextProperty(name, value)
 }
 
