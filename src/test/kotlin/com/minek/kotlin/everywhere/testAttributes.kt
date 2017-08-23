@@ -81,4 +81,28 @@ class TestAttributes {
                 }
         )
     }
+
+    @Test
+    fun testSrc() {
+        serialViewTests(
+                {
+                    Html.img(src( "https://octodex.github.com/images/maxtocat.gif"))
+                },
+                {
+                    assertEquals("<img src=\"https://octodex.github.com/images/maxtocat.gif\">", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testDataSet() {
+        serialViewTests(
+                {
+                    Html.button(dataset("dismiss","alert"))
+                },
+                {
+                    assertEquals("<button data-dismiss=\"alert\"></button>", it().html())
+                }
+        )
+    }
 }

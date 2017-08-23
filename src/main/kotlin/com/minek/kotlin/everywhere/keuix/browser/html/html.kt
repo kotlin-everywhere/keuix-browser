@@ -17,6 +17,14 @@ class HtmlBuilder<S> {
         children.add(Html.input(*attributes))
     }
 
+    fun header(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null) {
+        children.add(Html.header(*attributes, init = init))
+    }
+
+    fun footer(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null) {
+        children.add(Html.footer(*attributes, init = init))
+    }
+
     fun section(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null){
         children.add(Html.section(*attributes, init = init))
     }
@@ -33,8 +41,56 @@ class HtmlBuilder<S> {
         children.add(Html.span(*attributes, text = text, init = init))
     }
 
+    fun strong(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null) {
+        children.add(Html.strong(*attributes, text = text, init = init))
+    }
+
+    fun label(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null) {
+        children.add(Html.label(*attributes, text = text, init = init))
+    }
+
+    fun h1(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null) {
+        children.add(Html.h1(*attributes, text = text, init = init))
+    }
+
+    fun h2(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null) {
+        children.add(Html.h2(*attributes, text = text, init = init))
+    }
+
+    fun h3(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null) {
+        children.add(Html.h3(*attributes, text = text, init = init))
+    }
+
+    fun h4(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null) {
+        children.add(Html.h4(*attributes, text = text, init = init))
+    }
+
+    fun h5(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null) {
+        children.add(Html.h5(*attributes, text = text, init = init))
+    }
+
+    fun h6(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null) {
+        children.add(Html.h6(*attributes, text = text, init = init))
+    }
+
+    fun ul(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null) {
+        children.add(Html.ul(*attributes, init = init))
+    }
+
+    fun ol(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null) {
+        children.add(Html.ol(*attributes, init = init))
+    }
+
+    fun li(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null) {
+        children.add(Html.li(*attributes, text = text, init = init))
+    }
+
     fun a(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null) {
         children.add(Html.a(*attributes, text = text, init = init))
+    }
+
+    fun p(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null) {
+        children.add(Html.p(*attributes, text = text, init = init))
     }
 
     fun img(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null) {
@@ -69,6 +125,53 @@ sealed class Html<out S> {
             )
         }
 
+        fun <S> ul(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
+            return Element(
+                    "ul", attributes.asList(),
+                    if (init != null)
+                        HtmlBuilder<S>().apply(init).children
+                    else
+                        listOf()
+            )
+        }
+
+        fun <S> ol(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
+            return Element(
+                    "ol", attributes.asList(),
+                    if (init != null)
+                        HtmlBuilder<S>().apply(init).children
+                    else
+                        listOf()
+            )
+        }
+
+        fun <S> li(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null): Html<S> {
+            val children: List<Html<S>> = if (init != null) HtmlBuilder<S>().apply(init).children else listOf()
+            return Element(
+                    "li", attributes.asList(),
+                    if (text != null) listOf(text<S>(text)) + children else children
+            )
+        }
+
+        fun <S> header(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
+            return Element(
+                    "header", attributes.asList(),
+                    if (init != null)
+                        HtmlBuilder<S>().apply(init).children
+                    else
+                        listOf()
+            )
+        }
+
+        fun <S> footer(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
+            return Element(
+                    "footer", attributes.asList(),
+                    if (init != null)
+                        HtmlBuilder<S>().apply(init).children
+                    else
+                        listOf()
+            )
+        }
 
         fun <S> section(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
             return Element(
@@ -88,10 +191,82 @@ sealed class Html<out S> {
             )
         }
 
+        fun <S> strong(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null): Html<S> {
+            val children: List<Html<S>> = if (init != null) HtmlBuilder<S>().apply(init).children else listOf()
+            return Element(
+                    "strong", attributes.asList(),
+                    if (text != null) listOf(text<S>(text)) + children else children
+            )
+        }
+
+        fun <S> label(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null): Html<S> {
+            val children: List<Html<S>> = if (init != null) HtmlBuilder<S>().apply(init).children else listOf()
+            return Element(
+                    "label", attributes.asList(),
+                    if (text != null) listOf(text<S>(text)) + children else children
+            )
+        }
+
+        fun <S> h1(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null): Html<S> {
+            val children: List<Html<S>> = if (init != null) HtmlBuilder<S>().apply(init).children else listOf()
+            return Element(
+                    "h1", attributes.asList(),
+                    if (text != null) listOf(text<S>(text)) + children else children
+            )
+        }
+
+        fun <S> h2(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null): Html<S> {
+            val children: List<Html<S>> = if (init != null) HtmlBuilder<S>().apply(init).children else listOf()
+            return Element(
+                    "h2", attributes.asList(),
+                    if (text != null) listOf(text<S>(text)) + children else children
+            )
+        }
+
+        fun <S> h3(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null): Html<S> {
+            val children: List<Html<S>> = if (init != null) HtmlBuilder<S>().apply(init).children else listOf()
+            return Element(
+                    "h3", attributes.asList(),
+                    if (text != null) listOf(text<S>(text)) + children else children
+            )
+        }
+
+        fun <S> h4(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null): Html<S> {
+            val children: List<Html<S>> = if (init != null) HtmlBuilder<S>().apply(init).children else listOf()
+            return Element(
+                    "h4", attributes.asList(),
+                    if (text != null) listOf(text<S>(text)) + children else children
+            )
+        }
+
+        fun <S> h5(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null): Html<S> {
+            val children: List<Html<S>> = if (init != null) HtmlBuilder<S>().apply(init).children else listOf()
+            return Element(
+                    "h5", attributes.asList(),
+                    if (text != null) listOf(text<S>(text)) + children else children
+            )
+        }
+
+        fun <S> h6(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null): Html<S> {
+            val children: List<Html<S>> = if (init != null) HtmlBuilder<S>().apply(init).children else listOf()
+            return Element(
+                    "h6", attributes.asList(),
+                    if (text != null) listOf(text<S>(text)) + children else children
+            )
+        }
+
         fun <S> a(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null): Html<S> {
             val children: List<Html<S>> = if (init != null) HtmlBuilder<S>().apply(init).children else listOf()
             return Element(
                     "a", attributes.asList(),
+                    if (text != null) listOf(text<S>(text)) + children else children
+            )
+        }
+
+        fun <S> p(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null): Html<S> {
+            val children: List<Html<S>> = if (init != null) HtmlBuilder<S>().apply(init).children else listOf()
+            return Element(
+                    "p", attributes.asList(),
                     if (text != null) listOf(text<S>(text)) + children else children
             )
         }
