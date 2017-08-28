@@ -69,4 +69,52 @@ class TestAttributes {
                 }
         )
     }
+
+    @Test
+    fun testHref() {
+        serialViewTests(
+                {
+                    Html.a(href( "https://github.com"))
+                },
+                {
+                    assertEquals("<a href=\"https://github.com\"></a>", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testSrc() {
+        serialViewTests(
+                {
+                    Html.img(src( "https://octodex.github.com/images/maxtocat.gif"))
+                },
+                {
+                    assertEquals("<img src=\"https://octodex.github.com/images/maxtocat.gif\">", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testDataSet() {
+        serialViewTests(
+                {
+                    Html.button(dataset("dismiss","alert"))
+                },
+                {
+                    assertEquals("<button data-dismiss=\"alert\"></button>", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testAttrubute() {
+        serialViewTests(
+                {
+                    Html.button(attribute("type","button"))
+                },
+                {
+                    assertEquals("<button type=\"button\"></button>", it().html())
+                }
+        )
+    }
 }
