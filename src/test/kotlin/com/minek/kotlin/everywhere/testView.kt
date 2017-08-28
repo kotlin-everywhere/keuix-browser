@@ -309,10 +309,10 @@ class TestView {
     }
 
     @Test
-    fun testBuilderHeader() {
+    fun testHeader() {
         serialViewTests(
                 { _ ->
-                    Html.header {
+                    Html.header() {
                         div { +"header" }
                     }
                 },
@@ -323,15 +323,47 @@ class TestView {
     }
 
     @Test
-    fun testBuilderFooter() {
+    fun testBuilderHeader() {
         serialViewTests(
                 { _ ->
-                    Html.footer {
+                    Html.div {
+                        header() {
+                            div { +"header" }
+                        }
+                    }
+                },
+                {
+                    assertEquals("<div><header><div>header</div></header></div>", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testFooter() {
+        serialViewTests(
+                { _ ->
+                    Html.footer() {
                         div { +"footer" }
                     }
                 },
                 {
                     assertEquals("<footer><div>footer</div></footer>", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testBuilderFooter() {
+        serialViewTests(
+                { _ ->
+                    Html.div {
+                        footer() {
+                            div { +"footer" }
+                        }
+                    }
+                },
+                {
+                    assertEquals("<div><footer><div>footer</div></footer></div>", it().html())
                 }
         )
     }
@@ -349,9 +381,9 @@ class TestView {
     @Test
     fun testBuilderUl() {
         serialViewTests(
-                { _ -> Html.ul { li(class_("abc")){ +"nav" } } },
+                { _ -> Html.div { ul { li(class_("abc")){ +"nav" } } } },
                 {
-                    assertEquals("<ul><li class=\"abc\">nav</li></ul>", it().html())
+                    assertEquals("<div><ul><li class=\"abc\">nav</li></ul></div>", it().html())
                 }
         )
     }
@@ -359,7 +391,7 @@ class TestView {
     @Test
     fun testOl() {
         serialViewTests(
-                { _ -> Html.ol{ +"list" } },
+                { _ -> Html.ol(){ +"list" } },
                 {
                     assertEquals("<ol>list</ol>", it().html())
                 }
@@ -369,9 +401,29 @@ class TestView {
     @Test
     fun testBuilderOl() {
         serialViewTests(
-                { _ -> Html.ol { li(class_("abc")){ +"list" } } },
+                { _ -> Html.div { ol() { li(class_("abc")){ +"list" } } } },
                 {
-                    assertEquals("<ol><li class=\"abc\">list</li></ol>", it().html())
+                    assertEquals("<div><ol><li class=\"abc\">list</li></ol></div>", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testli() {
+        serialViewTests(
+                { _ -> Html.li(){ +"list" } },
+                {
+                    assertEquals("<li>list</li>", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testBuilderli() {
+        serialViewTests(
+                { _ -> Html.li(class_("abc")){ +"list" } },
+                {
+                    assertEquals("<li class=\"abc\">list</li>", it().html())
                 }
         )
     }

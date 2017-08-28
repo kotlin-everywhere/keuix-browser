@@ -105,4 +105,16 @@ class TestAttributes {
                 }
         )
     }
+
+    @Test
+    fun testAttrubute() {
+        serialViewTests(
+                {
+                    Html.button(attribute("type","button"))
+                },
+                {
+                    assertEquals("<button type=\"button\"></button>", it().html())
+                }
+        )
+    }
 }
