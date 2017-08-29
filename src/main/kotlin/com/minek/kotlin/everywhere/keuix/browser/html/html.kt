@@ -9,8 +9,8 @@ class HtmlBuilder<S> {
         children.add(Html.button(*attributes, text = text, init = init))
     }
 
-    fun div(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null) {
-        children.add(Html.div(*attributes, init = init))
+    fun div(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null) {
+        children.add(Html.div(*attributes, text = text, init = init))
     }
 
     fun input(vararg attributes: Attribute<S>) {
@@ -25,7 +25,7 @@ class HtmlBuilder<S> {
         children.add(Html.footer(*attributes, init = init))
     }
 
-    fun section(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null){
+    fun section(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null) {
         children.add(Html.section(*attributes, init = init))
     }
 
@@ -119,13 +119,11 @@ sealed class Html<out S> {
             )
         }
 
-        fun <S> div(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
+        fun <S> div(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null): Html<S> {
+            val children: List<Html<S>> = if (init != null) HtmlBuilder<S>().apply(init).children else listOf()
             return Element(
                     "div", attributes.asList(),
-                    if (init != null)
-                        HtmlBuilder<S>().apply(init).children
-                    else
-                        listOf()
+                    if (text != null) listOf(text<S>(text)) + children else children
             )
         }
 
