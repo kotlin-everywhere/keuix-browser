@@ -9,10 +9,6 @@ fun <S> attribute(name: String, value :String): Attribute<S> {
     return Attribute.TextProperty(name, value)
 }
 
-fun <S> dataset(name: String, value :String): Attribute<S> {
-    return Attribute.DatasetProperty(name, value)
-}
-
 fun <S> href(url :String): Attribute<S> {
     return Attribute.TextProperty("href", url)
 }

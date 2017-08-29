@@ -95,18 +95,6 @@ class TestAttributes {
     }
 
     @Test
-    fun testDataSet() {
-        serialViewTests(
-                {
-                    Html.button(dataset("dismiss","alert"))
-                },
-                {
-                    assertEquals("<button data-dismiss=\"alert\"></button>", it().html())
-                }
-        )
-    }
-
-    @Test
     fun testAttrubute() {
         serialViewTests(
                 {
