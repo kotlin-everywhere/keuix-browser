@@ -13,9 +13,10 @@ sealed class Cmd<out S> {
             return Closure { Bluebird.Companion.resolve(msg) }
         }
 
-        fun <S, T> map(cmd: Cmd<S>, tagger: (S) -> T): Cmd<T> {
+        fun <S, T> map(cmd: Cmd<S>?, tagger: (S) -> T): Cmd<T>? {
             return when (cmd) {
                 is Closure -> wrap { cmd.body().then(tagger) as Bluebird }
+                null -> null
             }
         }
     }

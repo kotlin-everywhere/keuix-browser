@@ -17,6 +17,7 @@ import com.minek.kotlin.everywhere.keuix.browser.html.onClick
 import com.minek.kotlin.everywhere.keuix.browser.testCrate
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 class TestCmd {
     private sealed class CounterMsg {
@@ -92,6 +93,7 @@ class TestCmd {
 
     @Test
     fun testCmdMap() {
+        assertNull(Cmd.map<String, String>(null) { "outer-$it" })
         asyncTest(((Cmd.map(Cmd.value("inner")) { "outer-$it" }) as Cmd.Closure).body().then { assertEquals("outer-inner", it) })
     }
 
