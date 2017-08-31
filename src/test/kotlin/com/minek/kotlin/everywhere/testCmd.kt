@@ -4,6 +4,7 @@ import com.minek.kotlin.everywhere.TestCmd.CounterMsg.New
 import com.minek.kotlin.everywhere.TestCmd.KeuseMsg.NewAdd
 import com.minek.kotlin.everywhere.TestCmd.Outer.Container
 import com.minek.kotlin.everywhere.keduct.bluebird.Bluebird
+import com.minek.kotlin.everywhere.keduct.qunit.asyncTest
 import com.minek.kotlin.everywhere.kelibs.result.Err
 import com.minek.kotlin.everywhere.kelibs.result.Ok
 import com.minek.kotlin.everywhere.kelibs.result.Result
@@ -63,7 +64,7 @@ class TestCmd {
     }
 
     @Test
-    fun testMap() {
+    fun testHtmlMap() {
         asyncSerialTest("",
                 { msg: Outer, _: String ->
                     when (msg) {
@@ -82,6 +83,16 @@ class TestCmd {
                 },
                 { assertEquals("InnerValue", it().text() as String) }
         )
+    }
+
+    @Test
+    fun testCmdValue() {
+        asyncTest((Cmd.value("msg") as Cmd.Closure).body().then { assertEquals("msg", it) })
+    }
+
+    @Test
+    fun testCmdMap() {
+        asyncTest(((Cmd.map(Cmd.value("inner")) { "outer-$it" }) as Cmd.Closure).body().then { assertEquals("outer-inner", it) })
     }
 
     private sealed class KeuseMsg {
