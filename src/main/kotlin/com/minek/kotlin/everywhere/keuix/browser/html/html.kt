@@ -101,6 +101,10 @@ class HtmlBuilder<S> {
         children.add(Html.img(*attributes, init = init))
     }
 
+    fun form(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null) {
+        element("form", attributes.toList(), init = init)
+    }
+
     operator fun String.unaryPlus() {
         children.add(Html.text(this))
     }
@@ -312,6 +316,10 @@ sealed class Html<out S> {
                     attributes.asList(),
                     if (text == null) listOf() else listOf(text(text))
             )
+        }
+
+        fun <S> form(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
+            return element("form", attributes.toList(), init = init)
         }
 
         fun <a, msg> map(tagger: (a) -> msg, html: Html<a>): Html<msg> {

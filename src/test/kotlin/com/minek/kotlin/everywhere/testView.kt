@@ -4,6 +4,7 @@ import com.minek.kotlin.everywhere.keuix.browser.Cmd
 import com.minek.kotlin.everywhere.keuix.browser.html.Html
 import com.minek.kotlin.everywhere.keuix.browser.html.class_
 import com.minek.kotlin.everywhere.keuix.browser.html.src
+import com.minek.kotlin.everywhere.keuix.browser.html.value
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -510,6 +511,26 @@ class TestView {
                 { _ -> Html.img() },
                 {
                     assertEquals("<img>", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testForm() {
+        serialViewTests(
+                { _ -> Html.form(class_("form-class")) { input(value("text")) } },
+                {
+                    assertEquals("<form class=\"form-class\"><input value=\"text\"></form>", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testBuilderForm() {
+        serialViewTests(
+                { _ -> Html.div { form(class_("form-class")) { input(value("text")) } } },
+                {
+                    assertEquals("<div><form class=\"form-class\"><input value=\"text\"></form></div>", it().html())
                 }
         )
     }
