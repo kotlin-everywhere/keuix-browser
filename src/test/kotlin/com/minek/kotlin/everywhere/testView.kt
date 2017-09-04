@@ -23,6 +23,28 @@ class TestView {
     }
 
     @Test
+    fun testElement() {
+        serialViewTests(
+                { _ -> Html.element("div", listOf(class_("outer-div")), listOf(Html.text("division"))) { span(text = "inner") } },
+                { assertEquals("<div class=\"outer-div\">division<span>inner</span></div>", it().html()) }
+        )
+    }
+
+    @Test
+    fun testBuilderElement() {
+        serialViewTests(
+                { _ ->
+                    Html.div {
+                        element("p", listOf(class_("outer-p")), listOf(Html.text("outer"))) {
+                            span(text = "inner")
+                        }
+                    }
+                },
+                { assertEquals("<div><p class=\"outer-p\">outer<span>inner</span></p></div>", it().html()) }
+        )
+    }
+
+    @Test
     fun testUnary() {
         serialViewTests(
                 { _ ->

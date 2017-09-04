@@ -5,6 +5,10 @@ import org.w3c.dom.events.Event
 class HtmlBuilder<S> {
     internal val children = mutableListOf<Html<S>>()
 
+    fun element(name: String, attributes: List<Attribute<S>> = listOf(), children: List<Html<S>> = listOf(), init: HtmlBuilderInit<S>? = null) {
+        this.children.add(Html.element(name, attributes, children, init = init))
+    }
+
     fun button(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null) {
         children.add(Html.button(*attributes, text = text, init = init))
     }
@@ -111,6 +115,11 @@ typealias HtmlBuilderInit<S> = HtmlBuilder<S>.() -> Unit
 @Suppress("unused")
 sealed class Html<out S> {
     companion object {
+        fun <S> element(name: String, attributes: List<Attribute<S>>? = null, children: List<Html<S>>? = null, init: HtmlBuilderInit<S>? = null): Html<S> {
+            val builderChildren = if (init != null) HtmlBuilder<S>().apply(init).children else null
+            return Element(name, attributes ?: listOf(), (children ?: listOf()) + (builderChildren ?: listOf()))
+        }
+
         fun <S> button(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null): Html<S> {
             val children: List<Html<S>> = if (init != null) HtmlBuilder<S>().apply(init).children else listOf()
             return Element(
