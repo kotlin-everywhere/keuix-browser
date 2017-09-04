@@ -339,7 +339,7 @@ class TestView {
     fun testHeader() {
         serialViewTests(
                 { _ ->
-                    Html.header() {
+                    Html.header {
                         div { +"header" }
                     }
                 },
@@ -354,7 +354,7 @@ class TestView {
         serialViewTests(
                 { _ ->
                     Html.div {
-                        header() {
+                        header {
                             div { +"header" }
                         }
                     }
@@ -369,7 +369,7 @@ class TestView {
     fun testFooter() {
         serialViewTests(
                 { _ ->
-                    Html.footer() {
+                    Html.footer {
                         div { +"footer" }
                     }
                 },
@@ -384,7 +384,7 @@ class TestView {
         serialViewTests(
                 { _ ->
                     Html.div {
-                        footer() {
+                        footer {
                             div { +"footer" }
                         }
                     }
@@ -418,7 +418,7 @@ class TestView {
     @Test
     fun testOl() {
         serialViewTests(
-                { _ -> Html.ol() { +"list" } },
+                { _ -> Html.ol { +"list" } },
                 {
                     assertEquals("<ol>list</ol>", it().html())
                 }
@@ -428,7 +428,7 @@ class TestView {
     @Test
     fun testBuilderOl() {
         serialViewTests(
-                { _ -> Html.div { ol() { li(class_("abc")) { +"list" } } } },
+                { _ -> Html.div { ol { li(class_("abc")) { +"list" } } } },
                 {
                     assertEquals("<div><ol><li class=\"abc\">list</li></ol></div>", it().html())
                 }
@@ -438,7 +438,7 @@ class TestView {
     @Test
     fun testli() {
         serialViewTests(
-                { _ -> Html.li() { +"list" } },
+                { _ -> Html.li { +"list" } },
                 {
                     assertEquals("<li>list</li>", it().html())
                 }
