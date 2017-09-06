@@ -3,11 +3,14 @@ package com.minek.kotlin.everywhere
 import com.minek.kotlin.everywhere.keduct.qunit.asyncTest
 import com.minek.kotlin.everywhere.keduct.qunit.fixture
 import com.minek.kotlin.everywhere.keuix.browser.Update
+import com.minek.kotlin.everywhere.keuix.browser.View
 import com.minek.kotlin.everywhere.keuix.browser.html.Html
+import com.minek.kotlin.everywhere.keuix.browser.html.onClick
 import com.minek.kotlin.everywhere.keuix.browser.runBeginnerProgram
 import com.minek.kotlin.everywhere.keuix.browser.runProgram
 import org.junit.Test
 import org.w3c.dom.Element
+import kotlin.browser.window
 import kotlin.test.assertEquals
 
 private data class Model(val count: Int = 0)
@@ -68,5 +71,26 @@ class TestProgram {
                 resolve(Unit)
             }
         }
+    }
+
+    @Test
+    fun testProgramRenderTiming() {
+        val update: Update<Int, Unit> = { _, model ->
+            model + 1 to null
+        }
+        val view: View<Int, Unit> = {
+            Html.button(onClick(Unit), text = "$it")
+        }
+        asyncSerialTest(
+                0, update, view,
+                {
+                    assertEquals("0", it().text())
+                    window.setTimeout({ it().find("button").click() }, 1)
+                    window.setTimeout({ it().find("button").click() }, 2)
+                },
+                {
+                    assertEquals("2", it().text())
+                }
+        )
     }
 }

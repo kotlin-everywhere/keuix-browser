@@ -9,7 +9,7 @@ import kotlin.browser.window
 
 private fun <S> List<Attribute<S>>.toProps(receiver: (S) -> Unit): Triple<dynamic, dynamic, dynamic> {
     val props: dynamic = object {}
-    val datasets : dynamic = object {}
+    val datasets: dynamic = object {}
     val on: dynamic = object {}
 
     this.forEach { attr ->
@@ -65,9 +65,11 @@ class Program<M, S>(private val container: Element, init: M,
     private val _updateView: (Double) -> Unit = { updateView() }
     private val receiver: (S) -> Unit = { msg ->
         val (newModel, cmd) = update(msg, model)
-        if (requestAnimationFrameId == null && model != newModel) {
+        if (model !== newModel) {
             model = newModel
-            requestAnimationFrameId = window.requestAnimationFrame(_updateView)
+            if (requestAnimationFrameId == null) {
+                requestAnimationFrameId = window.requestAnimationFrame(_updateView)
+            }
         }
         if (cmd != null) {
             handleCmd(cmd)
@@ -82,7 +84,7 @@ class Program<M, S>(private val container: Element, init: M,
 
     private fun updateView() {
         requestAnimationFrameId = null
-        if (previousModel != model) {
+        if (previousModel !== model) {
             previousModel = model
             virtualNode = patch(virtualNode, h("div", view(model).toVirtualNode(receiver)))
         }
