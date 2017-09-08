@@ -129,4 +129,16 @@ class TestAttributes {
                 }
         )
     }
+
+    @Test
+    fun testId() {
+        serialViewTests(
+                {
+                    Html.div(id("test-attribute-test-id"))
+                },
+                {
+                    assertEquals("<div id=\"test-attribute-test-id\"></div>", it().html())
+                }
+        )
+    }
 }

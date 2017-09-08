@@ -5,6 +5,10 @@ fun <S> class_(class_: String): Attribute<S> {
     return Attribute.TextProperty("class", class_)
 }
 
+fun <S> id(id: String): Attribute<S> {
+    return Attribute.TextProperty("id", id)
+}
+
 fun <S> attribute(name: String, value :String): Attribute<S> {
     return Attribute.TextProperty(name, value)
 }
