@@ -61,18 +61,21 @@ class Program<M, S>(private val container: Element, init: M,
     private var requestAnimationFrameId: Int? = null
     private var model = init
     private var previousModel = init
+    private var running = true
 
     private val _updateView: (Double) -> Unit = { updateView() }
     private val receiver: (S) -> Unit = { msg ->
-        val (newModel, cmd) = update(msg, model)
-        if (model !== newModel) {
-            model = newModel
-            if (requestAnimationFrameId == null) {
-                requestAnimationFrameId = window.requestAnimationFrame(_updateView)
+        if (running) {
+            val (newModel, cmd) = update(msg, model)
+            if (model !== newModel) {
+                model = newModel
+                if (requestAnimationFrameId == null) {
+                    requestAnimationFrameId = window.requestAnimationFrame(_updateView)
+                }
             }
-        }
-        if (cmd != null) {
-            handleCmd(cmd)
+            if (cmd != null) {
+                handleCmd(cmd)
+            }
         }
     }
     private var virtualNode = h("div", view(model).toVirtualNode(receiver))
@@ -83,6 +86,10 @@ class Program<M, S>(private val container: Element, init: M,
     }
 
     private fun updateView() {
+        if (!running) {
+            return
+        }
+
         requestAnimationFrameId = null
         if (previousModel !== model) {
             previousModel = model
@@ -98,6 +105,15 @@ class Program<M, S>(private val container: Element, init: M,
                 }
             }
         }
+    }
+
+    fun stop() {
+        if (!running) {
+            return
+        }
+        running = false
+
+        patch(virtualNode, h("div"))
     }
 }
 

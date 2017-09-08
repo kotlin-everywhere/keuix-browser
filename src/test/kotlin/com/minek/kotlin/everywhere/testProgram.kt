@@ -1,5 +1,6 @@
 package com.minek.kotlin.everywhere
 
+import com.minek.kotlin.everywhere.keduct.bluebird.Bluebird
 import com.minek.kotlin.everywhere.keduct.qunit.asyncTest
 import com.minek.kotlin.everywhere.keduct.qunit.fixture
 import com.minek.kotlin.everywhere.keuix.browser.Update
@@ -92,5 +93,16 @@ class TestProgram {
                     assertEquals("2", it().text())
                 }
         )
+    }
+
+    @Test
+    fun testUnmount() {
+        val update = { _: Unit, model: Int -> model to null }
+        val view: (Int) -> Html<Unit> = { model: Int -> Html.text("$model") }
+        val tests = Bluebird.resolve(Unit)
+                .andThen { serialTest(0, update, view, { assertEquals("0", it().text()) }) }
+                .then { assertEquals("", q(fixture()).html()) }
+                .andThen { serialTest(1, update, view, { assertEquals("1", it().text()) }) }
+        asyncTest(tests)
     }
 }
