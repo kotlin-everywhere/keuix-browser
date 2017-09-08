@@ -55,7 +55,7 @@ private fun <S> Html<S>.toVirtualNode(receiver: (S) -> Unit): dynamic {
 typealias Update<M, S> = (S, M) -> Pair<M, Cmd<S>?>
 typealias View<M, S> = (M) -> Html<S>
 
-class Program<M, S>(private val container: Element, init: M,
+class Program<M, S>(private val root: Element, init: M,
                     private val update: Update<M, S>, private val view: View<M, S>, onAfterRender: ((Element) -> Unit)?) {
 
     private var requestAnimationFrameId: Int? = null
@@ -79,10 +79,10 @@ class Program<M, S>(private val container: Element, init: M,
         }
     }
     private var virtualNode = h("div", view(model).toVirtualNode(receiver))
-    private val patch = if (onAfterRender != null) Snabbdom.init({ onAfterRender(container) }) else Snabbdom.init(null)
+    private val patch = if (onAfterRender != null) Snabbdom.init({ onAfterRender(root) }) else Snabbdom.init(null)
 
     init {
-        patch(container, virtualNode)
+        patch(root, virtualNode)
     }
 
     private fun updateView() {
@@ -107,39 +107,40 @@ class Program<M, S>(private val container: Element, init: M,
         }
     }
 
-    fun stop() {
-        if (!running) {
-            return
-        }
-        running = false
+    @JsName("stop")
+    fun stop(): M {
+        if (running) {
+            running = false
 
-        patch(virtualNode, h("div"))
+            patch(virtualNode, h("div"))
+        }
+        return model
     }
 }
 
-internal fun <M, S> runProgram(container: Element, init: M, update: Update<M, S>, view: View<M, S>, onAfterRender: (Element) -> Unit): Program<M, S> {
-    return Program(container, init, update, view, onAfterRender)
+internal fun <M, S> runProgram(root: Element, init: M, update: Update<M, S>, view: View<M, S>, onAfterRender: (Element) -> Unit): Program<M, S> {
+    return Program(root, init, update, view, onAfterRender)
 }
 
 @Suppress("unused")
-fun <M, S> runProgram(container: Element, init: M, update: Update<M, S>, view: View<M, S>): Program<M, S> {
-    return Program(container, init, update, view, null)
+fun <M, S> runProgram(root: Element, init: M, update: Update<M, S>, view: View<M, S>): Program<M, S> {
+    return Program(root, init, update, view, null)
 }
 
-internal fun <M, S> runBeginnerProgram(container: Element, init: M, update: (S, M) -> M, view: (M) -> Html<S>, onAfterRender: (Element) -> Unit): Program<M, S> {
-    return Program(container, init, { s, m -> update(s, m) to null }, view, onAfterRender)
-}
-
-@Suppress("unused")
-fun <M, S> runBeginnerProgram(container: Element, init: M, update: (S, M) -> M, view: (M) -> Html<S>): Program<M, S> {
-    return Program(container, init, { s, m -> update(s, m) to null }, view, null)
-}
-
-internal fun runBeginnerProgram(container: Element, view: Html<Unit>, onAfterRender: (Element) -> Unit): Program<Unit, Unit> {
-    return Program(container, Unit, { _, _ -> Unit to null }, { view }, onAfterRender)
+internal fun <M, S> runBeginnerProgram(root: Element, init: M, update: (S, M) -> M, view: (M) -> Html<S>, onAfterRender: (Element) -> Unit): Program<M, S> {
+    return Program(root, init, { s, m -> update(s, m) to null }, view, onAfterRender)
 }
 
 @Suppress("unused")
-fun runBeginnerProgram(container: Element, view: Html<Unit>): Program<Unit, Unit> {
-    return Program(container, Unit, { _, _ -> Unit to null }, { view }, null)
+fun <M, S> runBeginnerProgram(root: Element, init: M, update: (S, M) -> M, view: (M) -> Html<S>): Program<M, S> {
+    return Program(root, init, { s, m -> update(s, m) to null }, view, null)
+}
+
+internal fun runBeginnerProgram(root: Element, view: Html<Unit>, onAfterRender: (Element) -> Unit): Program<Unit, Unit> {
+    return Program(root, Unit, { _, _ -> Unit to null }, { view }, onAfterRender)
+}
+
+@Suppress("unused")
+fun runBeginnerProgram(root: Element, view: Html<Unit>): Program<Unit, Unit> {
+    return Program(root, Unit, { _, _ -> Unit to null }, { view }, null)
 }
