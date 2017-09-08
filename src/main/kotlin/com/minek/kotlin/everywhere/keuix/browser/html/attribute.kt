@@ -9,15 +9,15 @@ fun <S> id(id: String): Attribute<S> {
     return Attribute.TextProperty("id", id)
 }
 
-fun <S> attribute(name: String, value :String): Attribute<S> {
+fun <S> attribute(name: String, value: String): Attribute<S> {
     return Attribute.TextProperty(name, value)
 }
 
-fun <S> href(url :String): Attribute<S> {
+fun <S> href(url: String): Attribute<S> {
     return Attribute.TextProperty("href", url)
 }
 
-fun <S> src(url :String): Attribute<S> {
+fun <S> src(url: String): Attribute<S> {
     return Attribute.TextProperty("src", url)
 }
 
@@ -33,6 +33,9 @@ fun <S> value(value: String): Attribute<S> {
     return Attribute.TextProperty("value", value)
 }
 
+fun <S> type(type: String): Attribute<S> {
+    return Attribute.TextProperty("type", type)
+}
 
 fun <S> style(style: String): Attribute<S> {
     return Attribute.TextProperty("style", style)
