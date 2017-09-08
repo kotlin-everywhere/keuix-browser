@@ -95,13 +95,25 @@ class TestAttributes {
     }
 
     @Test
-    fun testAttrubute() {
+    fun testAttribute() {
         serialViewTests(
                 {
                     Html.button(attribute("type","button"))
                 },
                 {
                     assertEquals("<button type=\"button\"></button>", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testPlaceholder() {
+        serialViewTests(
+                {
+                    Html.input(placeholder("placeholder"))
+                },
+                {
+                    assertEquals("<input placeholder=\"placeholder\">", it().html())
                 }
         )
     }

@@ -30,3 +30,7 @@ fun <S> value(value: String): Attribute<S> {
 fun <S> style(style: String): Attribute<S> {
     return Attribute.TextProperty("style", style)
 }
+
+fun <S> placeholder(placeholder: String): Attribute<S> {
+    return Attribute.TextProperty("placeholder", placeholder)
+}
