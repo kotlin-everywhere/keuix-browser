@@ -25,6 +25,10 @@ fun <S> disabled(disabled: Boolean): Attribute<S> {
     return Attribute.BooleanProperty("disabled", disabled)
 }
 
+fun <S> checked(checked: Boolean): Attribute<S> {
+    return Attribute.BooleanProperty("checked", checked)
+}
+
 fun <S> autofocus(autofocus: Boolean): Attribute<S> {
     return Attribute.BooleanProperty("autofocus", autofocus)
 }

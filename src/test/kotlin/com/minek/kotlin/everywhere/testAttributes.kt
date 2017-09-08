@@ -154,4 +154,16 @@ class TestAttributes {
                 }
         )
     }
+
+    @Test
+    fun testChecked() {
+        serialViewTests(
+                {
+                    Html.input(type("checkbox"), checked(true))
+                },
+                {
+                    assertEquals("<input type=\"checkbox\" checked=\"\">", it().html())
+                }
+        )
+    }
 }
