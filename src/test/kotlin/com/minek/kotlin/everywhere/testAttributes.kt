@@ -166,4 +166,16 @@ class TestAttributes {
                 }
         )
     }
+
+    @Test
+    fun testFor() {
+        serialViewTests(
+                {
+                    Html.label(for_("id-field"))
+                },
+                {
+                    assertEquals("<label for=\"id-field\"></label>", it().html())
+                }
+        )
+    }
 }

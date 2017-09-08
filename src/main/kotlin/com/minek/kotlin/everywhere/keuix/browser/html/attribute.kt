@@ -48,3 +48,7 @@ fun <S> style(style: String): Attribute<S> {
 fun <S> placeholder(placeholder: String): Attribute<S> {
     return Attribute.TextProperty("placeholder", placeholder)
 }
+
+fun <S> for_(for_: String): Attribute<S> {
+    return Attribute.TextProperty("for", for_)
+}
