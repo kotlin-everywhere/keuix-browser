@@ -17,7 +17,12 @@ private fun <S> List<Attribute<S>>.toProps(receiver: (S) -> Unit): Triple<dynami
             is Attribute.DatasetProperty -> datasets[attr.name] = attr.value
             is Attribute.TextProperty -> props[attr.name] = attr.value
             is Attribute.BooleanProperty -> props[attr.name] = attr.value
-            is Attribute.EventHandler -> on[attr.name] = { event: Event -> receiver(attr.value(event)) }
+            is Attribute.EventHandler -> on[attr.name] = { event: Event ->
+                val msg = attr.value(event)
+                if (msg != null) {
+                    receiver(msg)
+                }
+            }
         }
     }
 

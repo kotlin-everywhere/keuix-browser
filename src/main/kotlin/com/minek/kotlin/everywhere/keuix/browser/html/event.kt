@@ -11,3 +11,14 @@ fun <S> onInput(tagger: (String) -> S): Attribute<S> {
         tagger(target.value as String)
     }
 }
+
+fun <S> onEnter(msg: S): Attribute<S> {
+    return Attribute.EventHandler("keydown") {
+        if (it.asDynamic().key == "enter" || it.asDynamic().keyCode == 13) {
+            it.preventDefault()
+            msg
+        } else {
+            null
+        }
+    }
+}
