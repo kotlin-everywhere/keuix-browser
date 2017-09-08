@@ -117,4 +117,16 @@ class TestAttributes {
                 }
         )
     }
+
+    @Test
+    fun testAutoFocus() {
+        serialViewTests(
+                {
+                    Html.input(autofocus(true))
+                },
+                {
+                    assertEquals("<input autofocus=\"\">", it().html())
+                }
+        )
+    }
 }

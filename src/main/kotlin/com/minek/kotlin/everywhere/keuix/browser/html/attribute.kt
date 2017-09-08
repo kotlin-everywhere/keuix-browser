@@ -21,6 +21,9 @@ fun <S> disabled(disabled: Boolean): Attribute<S> {
     return Attribute.BooleanProperty("disabled", disabled)
 }
 
+fun <S> autofocus(autofocus: Boolean): Attribute<S> {
+    return Attribute.BooleanProperty("autofocus", autofocus)
+}
 
 fun <S> value(value: String): Attribute<S> {
     return Attribute.TextProperty("value", value)
