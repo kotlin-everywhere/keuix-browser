@@ -52,7 +52,7 @@ fun <S> type(type: String): Attribute<S> {
 }
 
 fun <S> style(style: String): Attribute<S> {
-    return Attribute.TextProperty("style", style)
+    return Attribute.TextAttribute("style", style)
 }
 
 fun <S> placeholder(placeholder: String): Attribute<S> {
