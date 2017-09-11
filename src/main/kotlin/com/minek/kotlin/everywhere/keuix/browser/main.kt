@@ -12,10 +12,10 @@ data class AttributeSet(val props: dynamic, val attrs: dynamic, val on: dynamic,
 private fun <S> List<Attribute<S>>.toProps(receiver: (S) -> Unit): AttributeSet {
     val props: dynamic = object {}
     val attrs: dynamic = object {}
-    val eventMap = mutableMapOf<String, MutableList<(Event) -> S?>>()
     val on: dynamic = object {}
     var key: String? = null
 
+    val eventMap = mutableMapOf<String, MutableList<(Event) -> S?>>()
     this.forEach { attr ->
         when (attr) {
             is Attribute.TextProperty -> props[attr.name] = attr.value
@@ -28,7 +28,6 @@ private fun <S> List<Attribute<S>>.toProps(receiver: (S) -> Unit): AttributeSet 
             }
         }
     }
-
     eventMap.forEach { (name, handlers) ->
         on[name] = { event: Event ->
             handlers.forEach {
