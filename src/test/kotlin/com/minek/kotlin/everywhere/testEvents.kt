@@ -82,7 +82,7 @@ class TestEvents {
                 },
                 {
                     assertEquals("", it().children().first().`val`())
-                    it().children().first()[0].dispatchEvent(KeyboardEvent("keydown", KeyboardEventInit(key = "enter", code = "13")))
+                    it().children().first()[0].dispatchEvent(KeyboardEvent("keydown", KeyboardEventInit(key = "Enter", code = "13")))
                     Unit
                 },
                 {
