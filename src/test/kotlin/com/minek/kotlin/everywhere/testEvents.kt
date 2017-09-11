@@ -95,6 +95,26 @@ class TestEvents {
     }
 
     @Test
+    fun testOnEscape() {
+        serialViewTests(
+                { model ->
+                    Html.input(onEscape(Msg.Entered), value(model.inputValue))
+                },
+                {
+                    assertEquals("", it().children().first().`val`())
+                    it().children().first()[0].dispatchEvent(KeyboardEvent("keydown", KeyboardEventInit(key = "Escape", code = "27")))
+                    Unit
+                },
+                {
+                    assertEquals(
+                            "entered",
+                            it().children().first().`val`()
+                    )
+                }
+        )
+    }
+
+    @Test
     fun testOnDblclick() {
         serialViewTests(
                 { (clicked) ->

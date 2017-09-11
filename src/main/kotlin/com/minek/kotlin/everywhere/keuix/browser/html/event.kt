@@ -1,8 +1,6 @@
 package com.minek.kotlin.everywhere.keuix.browser.html
 
 import org.w3c.dom.HTMLInputElement
-import org.w3c.dom.events.InputEvent
-import org.w3c.dom.events.KeyboardEvent
 
 
 fun <S> onClick(msg: S): Attribute<S> {
@@ -19,6 +17,17 @@ fun <S> onInput(tagger: (String) -> S): Attribute<S> {
 fun <S> onEnter(msg: S): Attribute<S> {
     return Attribute.EventHandler("keydown") {
         if (it.asDynamic().key == "Enter" || it.asDynamic().keyCode == 13) {
+            it.preventDefault()
+            msg
+        } else {
+            null
+        }
+    }
+}
+
+fun <S> onEscape(msg: S): Attribute<S> {
+    return Attribute.EventHandler("keydown") {
+        if (it.asDynamic().key == "Escape" || it.asDynamic().keyCode == 27) {
             it.preventDefault()
             msg
         } else {
