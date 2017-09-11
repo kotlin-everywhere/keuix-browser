@@ -7,10 +7,13 @@ import org.w3c.dom.Element
 import org.w3c.dom.events.Event
 import kotlin.browser.window
 
-private fun <S> List<Attribute<S>>.toProps(receiver: (S) -> Unit): Triple<dynamic, dynamic, dynamic> {
+data class AttributeSet(val props: dynamic, val attrs: dynamic, val on: dynamic, val key: String?)
+
+private fun <S> List<Attribute<S>>.toProps(receiver: (S) -> Unit): AttributeSet {
     val props: dynamic = object {}
     val attrs: dynamic = object {}
     val on: dynamic = object {}
+    var key: String? = null
 
     this.forEach { attr ->
         when (attr) {
@@ -18,6 +21,7 @@ private fun <S> List<Attribute<S>>.toProps(receiver: (S) -> Unit): Triple<dynami
             is Attribute.BooleanProperty -> props[attr.name] = attr.value
             is Attribute.TextAttribute -> attrs[attr.name] = attr.value
             is Attribute.BooleanAttribute -> attrs[attr.name] = attr.value
+            is Attribute.Key -> key = attr.key
             is Attribute.EventHandler -> on[attr.name] = { event: Event ->
                 val msg = attr.value(event)
                 if (msg != null) {
@@ -27,7 +31,7 @@ private fun <S> List<Attribute<S>>.toProps(receiver: (S) -> Unit): Triple<dynami
         }
     }
 
-    return Triple(props, attrs, on)
+    return AttributeSet(props, attrs, on, key)
 }
 
 private fun <S, P> tagVirtualNode(tagger: Html.Tagger<S, P>, receiver: (S) -> Unit): dynamic {
@@ -39,10 +43,13 @@ private fun <S> Html<S>.toVirtualNode(receiver: (S) -> Unit): dynamic {
         is Html.Text -> this.text
         is Html.Element -> {
             val data: dynamic = object {}
-            val (props, attrs, on) = this.attributes.toProps(receiver)
+            val (props, attrs, on, key) = this.attributes.toProps(receiver)
             data["props"] = props
             data["attrs"] = attrs
             data["on"] = on
+            if (key != null) {
+                data["key"] = key
+            }
             h(
                     this.tagName,
                     data,

@@ -62,3 +62,7 @@ fun <S> placeholder(placeholder: String): Attribute<S> {
 fun <S> for_(for_: String): Attribute<S> {
     return Attribute.TextAttribute("for", for_)
 }
+
+fun <S> key(key: String): Attribute<S> {
+    return Attribute.Key(key)
+}

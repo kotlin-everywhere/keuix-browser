@@ -340,4 +340,5 @@ sealed class Attribute<out S> {
     class TextAttribute<out S>(val name: String, val value: String) : Attribute<S>()
     class BooleanAttribute<out S>(val name: String, val value: Boolean) : Attribute<S>()
     class EventHandler<out S>(val name: String, val value: (Event) -> S?) : Attribute<S>()
+    class Key<out S>(val key: String) : Attribute<S>()
 }

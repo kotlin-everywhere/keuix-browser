@@ -3,16 +3,22 @@ package com.minek.kotlin.everywhere
 import com.minek.kotlin.everywhere.keuix.browser.Update
 import com.minek.kotlin.everywhere.keuix.browser.html.*
 import org.junit.Test
+import org.w3c.dom.HTMLElement
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class TestAttributes {
-    private data class Model(val clicked: Boolean = false)
-    private sealed class Msg
+    private data class Model(val fired: Boolean = false)
+    private sealed class Msg {
+        object Fire : Msg()
+    }
 
     private val init = Model()
 
-    private val update: Update<Model, Msg> = { _, model ->
-        model to null
+    private val update: Update<Model, Msg> = { msg, model ->
+        when (msg) {
+            Msg.Fire -> model.copy(fired = true) to null
+        }
     }
 
     private fun serialViewTests(view: (Model) -> Html<Msg>, vararg tests: (root: () -> dynamic) -> Unit) {
@@ -183,6 +189,33 @@ class TestAttributes {
                 },
                 {
                     assertEquals("<label for=\"id-field\"></label>", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testKey() {
+        var second: HTMLElement? = null
+
+        serialViewTests(
+                { (fired) ->
+                    Html.div {
+                        ul {
+                            if (!fired) {
+                                li(text = "first")
+                            }
+                            li(key("second"), text = "second")
+                        }
+                        button(onClick(Msg.Fire))
+                    }
+                },
+                {
+                    second = it().find("li")[1] as? HTMLElement
+                    it().find("button").click()
+                    Unit
+                },
+                {
+                    assertTrue(second === it().find("li")[0])
                 }
         )
     }
