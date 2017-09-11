@@ -44,7 +44,7 @@ fun <S> autofocus(autofocus: Boolean): Attribute<S> {
 }
 
 fun <S> value(value: String): Attribute<S> {
-    return Attribute.TextAttribute("value", value)
+    return Attribute.TextProperty("value", value)
 }
 
 fun <S> type(type: String): Attribute<S> {

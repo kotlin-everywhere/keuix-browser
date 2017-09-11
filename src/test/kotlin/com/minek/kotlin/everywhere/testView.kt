@@ -518,9 +518,9 @@ class TestView {
     @Test
     fun testForm() {
         serialViewTests(
-                { _ -> Html.form(class_("form-class")) { input(value("text")) } },
+                { _ -> Html.form(class_("form-class"))},
                 {
-                    assertEquals("<form class=\"form-class\"><input value=\"text\"></form>", it().html())
+                    assertEquals("<form class=\"form-class\"></form>", it().html())
                 }
         )
     }
@@ -528,9 +528,9 @@ class TestView {
     @Test
     fun testBuilderForm() {
         serialViewTests(
-                { _ -> Html.div { form(class_("form-class")) { input(value("text")) } } },
+                { _ -> Html.div { form(class_("form-class"))} },
                 {
-                    assertEquals("<div><form class=\"form-class\"><input value=\"text\"></form></div>", it().html())
+                    assertEquals("<div><form class=\"form-class\"></form></div>", it().html())
                 }
         )
     }
