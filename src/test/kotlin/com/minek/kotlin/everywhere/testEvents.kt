@@ -149,6 +149,11 @@ class TestEvents {
                 },
                 {
                     assertEquals("<div><input type=\"checkbox\" checked=\"\">checked</div>", it().html())
+                    it().find("input").click()
+                    Unit
+                },
+                {
+                    assertEquals("<div><input type=\"checkbox\"></div>", it().html())
                 }
         )
     }
