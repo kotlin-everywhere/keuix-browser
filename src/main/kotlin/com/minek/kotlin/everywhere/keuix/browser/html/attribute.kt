@@ -40,7 +40,7 @@ fun <S> checked(checked: Boolean): Attribute<S> {
 }
 
 fun <S> autofocus(autofocus: Boolean): Attribute<S> {
-    return Attribute.BooleanProperty("autofocus", autofocus)
+    return Attribute.BooleanAttribute("autofocus", autofocus)
 }
 
 fun <S> value(value: String): Attribute<S> {
