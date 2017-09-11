@@ -26,3 +26,7 @@ fun <S> onEnter(msg: S): Attribute<S> {
 fun <S> onDblclick(msg: S): Attribute<S> {
     return Attribute.EventHandler("dblclick") { msg }
 }
+
+fun <S> onBlur(msg: S): Attribute<S> {
+    return Attribute.EventHandler("blur") { msg }
+}

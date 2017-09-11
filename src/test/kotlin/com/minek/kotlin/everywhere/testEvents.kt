@@ -93,7 +93,7 @@ class TestEvents {
     }
 
     @Test
-    fun testOnDbclick() {
+    fun testOnDblclick() {
         serialViewTests(
                 { (clicked) ->
                     Html.button(onDblclick(Msg.Clicked)) {
@@ -102,7 +102,26 @@ class TestEvents {
                 },
                 {
                     assertEquals("<button></button>", it().html())
-                    it().children().first().dblclick()
+                    it().children().first()[0].dispatchEvent(Event("dblclick", EventInit()))
+                    Unit
+                },
+                {
+                    assertEquals("<button>clicked</button>", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testOnBlur() {
+        serialViewTests(
+                { (clicked) ->
+                    Html.button(onBlur(Msg.Clicked)) {
+                        +(if (clicked) "clicked" else "")
+                    }
+                },
+                {
+                    assertEquals("<button></button>", it().html())
+                    it().children().first()[0].dispatchEvent(Event("blur", EventInit()))
                     Unit
                 },
                 {
