@@ -13,11 +13,14 @@ import com.minek.kotlin.everywhere.keuix.browser.Update
 import com.minek.kotlin.everywhere.keuix.browser.View
 import com.minek.kotlin.everywhere.keuix.browser.common.TestCrate
 import com.minek.kotlin.everywhere.keuix.browser.html.Html
+import com.minek.kotlin.everywhere.keuix.browser.html.id
 import com.minek.kotlin.everywhere.keuix.browser.html.onClick
 import com.minek.kotlin.everywhere.keuix.browser.testCrate
 import org.junit.Test
+import kotlin.browser.document
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class TestCmd {
     private sealed class CounterMsg {
@@ -88,13 +91,59 @@ class TestCmd {
 
     @Test
     fun testCmdValue() {
-        asyncTest((Cmd.value("msg") as Cmd.Closure).body().then { assertEquals("msg", it) })
+        asyncTest((Cmd.value("msg") as Cmd.Promised).body().then { assertEquals("msg", it) })
     }
 
     @Test
     fun testCmdMap() {
         assertNull(Cmd.map<String, String>(null) { "outer-$it" })
-        asyncTest(((Cmd.map(Cmd.value("inner")) { "outer-$it" }) as Cmd.Closure).body().then { assertEquals("outer-inner", it) })
+        asyncTest(((Cmd.map(Cmd.value("inner")) { "outer-$it" }) as Cmd.Promised).body().then { assertEquals("outer-inner", it) })
+    }
+
+    @Test
+    fun testCmdFocusAfterUiUpdate() {
+        val update: Update<String, Unit> = { _, model -> model + model to Cmd.focus("test-cmd-focus") }
+        asyncSerialTest(".", update,
+                { model ->
+                    Html.div {
+                        +model
+                        input(id("test-cmd-focus"))
+                        button(onClick(Unit))
+                    }
+                },
+                {
+                    assertEquals("body", (document.activeElement?.tagName ?: "").toLowerCase())
+                    it().find("button").click()
+                    Unit
+                },
+                {
+                    // Draw Event -> Test body -> UiProcessor Execution
+                    // 더미로 한번더 호출줘야 UiProcessor 를 확인할 수 있다.
+                    it().find("button").click()
+                    Unit
+                },
+                {
+                    assertTrue(document.activeElement === it().find("input")[0])
+                }
+        )
+    }
+
+    @Test
+    fun testCmdFocusWithoutUiUpdate() {
+        val update: Update<Unit, Unit> = { _, model -> model to Cmd.focus("test-cmd-focus") }
+        asyncSerialTest(Unit, update,
+                { _ ->
+                    Html.div {
+                        input(id("test-cmd-focus"))
+                        button(onClick(Unit))
+                    }
+                },
+                {
+                    assertEquals("body", (document.activeElement?.tagName ?: "").toLowerCase())
+                    it().find("button").click()
+                    assertTrue(document.activeElement === it().find("input")[0])
+                }
+        )
     }
 
     private sealed class KeuseMsg {

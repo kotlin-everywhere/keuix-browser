@@ -68,13 +68,14 @@ private fun <S> Html<S>.toVirtualNode(receiver: (S) -> Unit): dynamic {
 typealias Update<M, S> = (S, M) -> Pair<M, Cmd<S>?>
 typealias View<M, S> = (M) -> Html<S>
 
-class Program<M, S>(private val root: Element, init: M,
-                    private val update: Update<M, S>, private val view: View<M, S>, onAfterRender: ((Element) -> Unit)?) {
+class Program<out M, S>(private val root: Element, init: M,
+                        private val update: Update<M, S>, private val view: View<M, S>, onAfterRender: ((Element) -> Unit)?) {
 
     private var requestAnimationFrameId: Int? = null
     private var model = init
     private var previousModel = init
     private var running = true
+    private var uiProcessor = arrayOf<() -> Unit>()
 
     private val _updateView: (Double) -> Unit = { updateView() }
     private val receiver: (S) -> Unit = { msg ->
@@ -108,13 +109,29 @@ class Program<M, S>(private val root: Element, init: M,
             previousModel = model
             virtualNode = patch(virtualNode, h("div", view(model).toVirtualNode(receiver)))
         }
+        uiProcessor.forEach { it() }
+        uiProcessor = arrayOf()
     }
 
     private fun handleCmd(cmd: Cmd<S>) {
         when (cmd) {
-            is Cmd.Closure -> {
+            is Cmd.Promised -> {
                 cmd.body().then {
                     receiver(it)
+                }
+            }
+            is Cmd.UiProcessor -> {
+                /*
+                    UiProcessor 의 동작 타이밍 구분
+                    1. View 가 수정 되었거나, Draw 를 기다리고 있을 경우
+                        화면에 UI 가 표시된후 Processor 를 호출 한다.
+                    2. Cmd 만 왔을 경우
+                        현재 표시된 UI 를 기준으로 동작한다.
+                 */
+                if (requestAnimationFrameId != null) {
+                    uiProcessor += cmd.body
+                } else {
+                    cmd.body()
                 }
             }
         }

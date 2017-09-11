@@ -12,7 +12,7 @@ val testCrate = TestCrate().apply { i(remote = "http://localhost:8000") }
 class TestKeuse {
     private fun <T : Cmd<S>, S> T.fetch(): Bluebird<S> {
         @Suppress("UNCHECKED_CAST")
-        return (this as Cmd.Closure<S>).body()
+        return (this as Cmd.Promised<S>).body()
     }
 
     @Test
