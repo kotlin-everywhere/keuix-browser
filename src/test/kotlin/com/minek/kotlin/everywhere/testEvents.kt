@@ -177,4 +177,25 @@ class TestEvents {
                 }
         )
     }
+
+    @Test
+    fun testMultipleEvents() {
+        serialViewTests(
+                { m ->
+                    Html.button(onClick(Msg.Clicked), onClick(Msg.Entered)) {
+                        +(if (m.clicked) "clicked" else "")
+                        +"-"
+                        +m.inputValue
+                    }
+                },
+                {
+                    assertEquals("-", it().text())
+                    it().children().first().click()
+                    Unit
+                },
+                {
+                    assertEquals("clicked-entered", it().text())
+                }
+        )
+    }
 }
