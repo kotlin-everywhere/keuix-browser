@@ -3,8 +3,13 @@ package com.minek.kotlin.everywhere.keuix.browser.html
 import org.w3c.dom.HTMLInputElement
 
 
-fun <S> onClick(msg: S): Attribute<S> {
-    return Attribute.EventHandler("click") { msg }
+fun <S> onClick(msg: S, preventDefault: Boolean = false): Attribute<S> {
+    return Attribute.EventHandler("click") {
+        if (preventDefault) {
+            it.preventDefault()
+        }
+        msg
+    }
 }
 
 fun <S> onInput(tagger: (String) -> S): Attribute<S> {

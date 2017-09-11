@@ -7,6 +7,7 @@ import org.w3c.dom.EventInit
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent
 import org.w3c.dom.events.KeyboardEventInit
+import kotlin.browser.window
 import kotlin.test.assertEquals
 
 class TestEvents {
@@ -49,6 +50,26 @@ class TestEvents {
                 },
                 {
                     assertEquals("<button>clicked</button>", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testOnClickPreventDefault() {
+        serialViewTests(
+                { (clicked) ->
+                    Html.a(onClick(Msg.Clicked, true), href("#not-prevented")) {
+                        +(if (clicked) "clicked" else "")
+                    }
+                },
+                {
+                    assertEquals("<a href=\"#not-prevented\"></a>", it().html())
+                    it().find("a")[0].click()
+                    Unit
+                },
+                {
+                    assertEquals("<a href=\"#not-prevented\">clicked</a>", it().html())
+                    assertEquals("", window.location.hash)
                 }
         )
     }
