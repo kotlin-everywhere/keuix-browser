@@ -10,11 +10,12 @@ import org.w3c.dom.events.KeyboardEventInit
 import kotlin.test.assertEquals
 
 class TestEvents {
-    private data class Model(val clicked: Boolean = false, val inputValue: String = "")
+    private data class Model(val clicked: Boolean = false, val inputValue: String = "", val checked: Boolean = false)
     private sealed class Msg {
         object Clicked : Msg()
         object Entered : Msg()
-        data class NewInputValue(val inputValue: String) : Msg()
+        class Checked(val checked: Boolean) : Msg()
+        class NewInputValue(val inputValue: String) : Msg()
     }
 
     private val init = Model()
@@ -24,6 +25,7 @@ class TestEvents {
             Msg.Clicked -> model.copy(clicked = true)
             Msg.Entered -> model.copy(inputValue = "entered")
             is Msg.NewInputValue -> model.copy(inputValue = msg.inputValue)
+            is TestEvents.Msg.Checked -> model.copy(checked = msg.checked)
         }
         newModel to null
     }
@@ -126,6 +128,27 @@ class TestEvents {
                 },
                 {
                     assertEquals("<button>clicked</button>", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testOnChecked() {
+        serialViewTests(
+                { model ->
+                    Html.div {
+                        input(type("checkbox"), checked(model.checked), onCheck { Msg.Checked(it) })
+                        +(if (model.checked) "checked" else "")
+                    }
+
+                },
+                {
+                    assertEquals("<div><input type=\"checkbox\"></div>", it().html())
+                    it().find("input").click()
+                    Unit
+                },
+                {
+                    assertEquals("<div><input type=\"checkbox\" checked=\"\">checked</div>", it().html())
                 }
         )
     }

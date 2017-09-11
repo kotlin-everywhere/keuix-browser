@@ -1,5 +1,7 @@
 package com.minek.kotlin.everywhere.keuix.browser.html
 
+import org.w3c.dom.HTMLInputElement
+
 
 fun <S> onClick(msg: S): Attribute<S> {
     return Attribute.EventHandler("click") { msg }
@@ -29,4 +31,10 @@ fun <S> onDblclick(msg: S): Attribute<S> {
 
 fun <S> onBlur(msg: S): Attribute<S> {
     return Attribute.EventHandler("blur") { msg }
+}
+
+fun <S> onCheck(tagger: (Boolean) -> S): Attribute<S> {
+    return Attribute.EventHandler("change") {
+        (it.target as? HTMLInputElement)?.let { tagger(it.checked) }
+    }
 }
