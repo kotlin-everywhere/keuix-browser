@@ -5,6 +5,16 @@ fun <S> class_(class_: String): Attribute<S> {
     return Attribute.TextProperty("class", class_)
 }
 
+fun <S> classes(vararg pairs: Pair<String, Boolean>, class_: String = ""): Attribute<S> {
+    val classes = pairs
+            .filter { it.second }
+            .joinToString(" ") { it.first }
+            .let {
+                if (class_.isNotEmpty()) "$class_ $it" else it
+            }
+    return Attribute.TextProperty("class", classes)
+}
+
 fun <S> id(id: String): Attribute<S> {
     return Attribute.TextProperty("id", id)
 }

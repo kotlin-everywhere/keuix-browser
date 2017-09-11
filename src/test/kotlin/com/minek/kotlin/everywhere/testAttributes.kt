@@ -29,6 +29,14 @@ class TestAttributes {
     }
 
     @Test
+    fun testClasses() {
+        serialViewTests(
+                { Html.div(classes("first" to true, "second" to false, class_ = "default")) },
+                { assertEquals("<div class=\"default first\"></div>", it().html()) }
+        )
+    }
+
+    @Test
     fun testDisabled() {
         serialViewTests(
                 {
@@ -74,7 +82,7 @@ class TestAttributes {
     fun testHref() {
         serialViewTests(
                 {
-                    Html.a(href( "https://github.com"))
+                    Html.a(href("https://github.com"))
                 },
                 {
                     assertEquals("<a href=\"https://github.com\"></a>", it().html())
@@ -86,7 +94,7 @@ class TestAttributes {
     fun testSrc() {
         serialViewTests(
                 {
-                    Html.img(src( "https://octodex.github.com/images/maxtocat.gif"))
+                    Html.img(src("https://octodex.github.com/images/maxtocat.gif"))
                 },
                 {
                     assertEquals("<img src=\"https://octodex.github.com/images/maxtocat.gif\">", it().html())
@@ -98,7 +106,7 @@ class TestAttributes {
     fun testAttribute() {
         serialViewTests(
                 {
-                    Html.button(attribute("type","button"))
+                    Html.button(attribute("type", "button"))
                 },
                 {
                     assertEquals("<button type=\"button\"></button>", it().html())
