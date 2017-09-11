@@ -2,7 +2,7 @@ package com.minek.kotlin.everywhere.keuix.browser.html
 
 
 fun <S> class_(class_: String): Attribute<S> {
-    return Attribute.TextProperty("class", class_)
+    return Attribute.TextAttribute("class", class_)
 }
 
 fun <S> classes(vararg pairs: Pair<String, Boolean>, class_: String = ""): Attribute<S> {
@@ -12,7 +12,7 @@ fun <S> classes(vararg pairs: Pair<String, Boolean>, class_: String = ""): Attri
             .let {
                 if (class_.isNotEmpty()) "$class_ $it" else it
             }
-    return Attribute.TextProperty("class", classes)
+    return com.minek.kotlin.everywhere.keuix.browser.html.class_(classes)
 }
 
 fun <S> id(id: String): Attribute<S> {
@@ -36,7 +36,7 @@ fun <S> disabled(disabled: Boolean): Attribute<S> {
 }
 
 fun <S> checked(checked: Boolean): Attribute<S> {
-    return Attribute.BooleanProperty("checked", checked)
+    return Attribute.BooleanAttribute("checked", checked)
 }
 
 fun <S> autofocus(autofocus: Boolean): Attribute<S> {
@@ -44,7 +44,7 @@ fun <S> autofocus(autofocus: Boolean): Attribute<S> {
 }
 
 fun <S> value(value: String): Attribute<S> {
-    return Attribute.TextProperty("value", value)
+    return Attribute.TextAttribute("value", value)
 }
 
 fun <S> type(type: String): Attribute<S> {
@@ -60,5 +60,5 @@ fun <S> placeholder(placeholder: String): Attribute<S> {
 }
 
 fun <S> for_(for_: String): Attribute<S> {
-    return Attribute.TextProperty("for", for_)
+    return Attribute.TextAttribute("for", for_)
 }

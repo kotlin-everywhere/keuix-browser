@@ -337,5 +337,7 @@ sealed class Attribute<out S> {
     class DatasetProperty<out S>(val name: String, val value: String) : Attribute<S>()
     class TextProperty<out S>(val name: String, val value: String) : Attribute<S>()
     class BooleanProperty<out S>(val name: String, val value: Boolean) : Attribute<S>()
+    class TextAttribute<out S>(val name: String, val value: String) : Attribute<S>()
+    class BooleanAttribute<out S>(val name: String, val value: Boolean) : Attribute<S>()
     class EventHandler<out S>(val name: String, val value: (Event) -> S?) : Attribute<S>()
 }
