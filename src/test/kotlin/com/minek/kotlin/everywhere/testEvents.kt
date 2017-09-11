@@ -92,4 +92,22 @@ class TestEvents {
         )
     }
 
+    @Test
+    fun testOnDbclick() {
+        serialViewTests(
+                { (clicked) ->
+                    Html.button(onDblclick(Msg.Clicked)) {
+                        +(if (clicked) "clicked" else "")
+                    }
+                },
+                {
+                    assertEquals("<button></button>", it().html())
+                    it().children().first().dblclick()
+                    Unit
+                },
+                {
+                    assertEquals("<button>clicked</button>", it().html())
+                }
+        )
+    }
 }
