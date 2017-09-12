@@ -105,6 +105,10 @@ class HtmlBuilder<S> {
         element("form", attributes.toList(), init = init)
     }
 
+    fun fieldset(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null) {
+        element("fieldset", attributes.toList(), init = init)
+    }
+
     operator fun String.unaryPlus() {
         children.add(Html.text(this))
     }
@@ -320,6 +324,10 @@ sealed class Html<out S> {
 
         fun <S> form(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
             return element("form", attributes.toList(), init = init)
+        }
+
+        fun <S> fieldset(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
+            return element("fieldset", attributes.toList(), init = init)
         }
 
         fun <a, msg> map(tagger: (a) -> msg, html: Html<a>): Html<msg> {

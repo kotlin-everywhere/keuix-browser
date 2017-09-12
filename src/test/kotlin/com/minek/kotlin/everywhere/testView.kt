@@ -534,4 +534,24 @@ class TestView {
                 }
         )
     }
+
+    @Test
+    fun testFieldset() {
+        serialViewTests(
+                { _ -> Html.fieldset(class_("fieldset-class"))},
+                {
+                    assertEquals("<fieldset class=\"fieldset-class\"></fieldset>", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testBuilderFieldset() {
+        serialViewTests(
+                { _ -> Html.div { fieldset(class_("fieldset-class"))} },
+                {
+                    assertEquals("<div><fieldset class=\"fieldset-class\"></fieldset></div>", it().html())
+                }
+        )
+    }
 }

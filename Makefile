@@ -4,4 +4,7 @@ build:
 webpack:
 	cd webpack && npm i && npm run dev
 
-.PHONY: webpack build
+testServer:
+	$(MAKE) -C testServer run
+
+.PHONY: webpack build testServer
