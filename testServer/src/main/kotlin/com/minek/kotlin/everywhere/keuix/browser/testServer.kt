@@ -12,7 +12,7 @@ class CorsFilter : org.springframework.web.filter.CorsFilter(buildCorsConfigurat
             val source = UrlBasedCorsConfigurationSource()
             val config = CorsConfiguration()
             config.addAllowedMethod("POST")
-            config.addAllowedOrigin("http://localhost:8080")
+            config.addAllowedOrigin("*")
             source.registerCorsConfiguration("/**", config)
             return source
         }

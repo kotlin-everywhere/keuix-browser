@@ -23,6 +23,9 @@ sourceSets {
     main.kotlin.srcDirs += '../testCommon'
 }
 
+apply plugin: 'application'
+mainClassName = 'com.minek.kotlin.everywhere.keuix.browser.TestServerKt'
+
 repositories {
     jcenter()
     maven { url 'https://jitpack.io' }
