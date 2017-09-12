@@ -554,4 +554,24 @@ class TestView {
                 }
         )
     }
+
+    @Test
+    fun testLegend() {
+        serialViewTests(
+                { _ -> Html.legend(class_("legend-class"), text = "title")},
+                {
+                    assertEquals("<legend class=\"legend-class\">title</legend>", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testBuilderLegend() {
+        serialViewTests(
+                { _ -> Html.div { legend(class_("legend-class"), text = "title")} },
+                {
+                    assertEquals("<div><legend class=\"legend-class\">title</legend></div>", it().html())
+                }
+        )
+    }
 }

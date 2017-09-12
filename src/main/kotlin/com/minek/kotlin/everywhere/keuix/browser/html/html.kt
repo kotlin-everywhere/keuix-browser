@@ -109,6 +109,10 @@ class HtmlBuilder<S> {
         element("fieldset", attributes.toList(), init = init)
     }
 
+    fun legend(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null) {
+        element("legend", attributes.toList(), text?.let { listOf(Html.text<S>(text)) } ?: listOf(), init)
+    }
+
     operator fun String.unaryPlus() {
         children.add(Html.text(this))
     }
@@ -328,6 +332,10 @@ sealed class Html<out S> {
 
         fun <S> fieldset(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
             return element("fieldset", attributes.toList(), init = init)
+        }
+
+        fun <S> legend(vararg attributes: Attribute<S>, text: String? = null, init: HtmlBuilderInit<S>? = null): Html<S> {
+            return element("legend", attributes.asList(), text?.let { listOf(text<S>(text)) } ?: listOf(), init)
         }
 
         fun <a, msg> map(tagger: (a) -> msg, html: Html<a>): Html<msg> {
