@@ -46,6 +46,14 @@ sealed class Cmd<out S> {
                         }
             }
         }
+
+        fun <S : Any> confirm(message: String, tagger: (Boolean) -> S): Cmd<S> {
+            return wrap {
+                Bluebird.resolve(message)
+                        .then { window.confirm(message) }
+                        .then(tagger)
+            }
+        }
     }
 
     internal class Promised<out S>(internal val body: () -> Bluebird<S>) : Cmd<S>()
