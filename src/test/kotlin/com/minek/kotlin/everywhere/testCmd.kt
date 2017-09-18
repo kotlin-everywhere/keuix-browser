@@ -149,13 +149,11 @@ class TestCmd {
                 {
                     assertEquals("body", (document.activeElement?.tagName ?: "").toLowerCase())
                     it().find("button").click()
-                    Unit
                 },
                 {
                     // Draw Event -> Test body -> UiProcessor Execution
                     // 더미로 한번더 호출줘야 UiProcessor 를 확인할 수 있다.
                     it().find("button").click()
-                    Unit
                 },
                 {
                     assertTrue(document.activeElement === it().find("input")[0])
@@ -177,6 +175,31 @@ class TestCmd {
                     assertEquals("body", (document.activeElement?.tagName ?: "").toLowerCase())
                     it().find("button").click()
                     assertTrue(document.activeElement === it().find("input")[0])
+                }
+        )
+    }
+
+    @Test
+    fun testSideEffect() {
+        var effected = false
+
+        asyncSerialTest(
+                0,
+                { _: Unit, model: Int -> model + 1 to Cmd.sideEffect { effected = true; console.info("called") } },
+                { model -> Html.button(onClick(Unit), text = "$model") },
+                {
+                    assertEquals("0", it().text())
+                    assertEquals(false, effected)
+                    it().find("button").click()
+                },
+                {
+                    assertEquals("1", it().text())
+                    // Draw Event -> Test body -> UiProcessor Execution
+                    // 더미로 한번더 호출줘야 sideEffect 를 확인할 수 있다.
+                    it().find("button").click()
+                },
+                {
+                    assertEquals(true, effected)
                 }
         )
     }

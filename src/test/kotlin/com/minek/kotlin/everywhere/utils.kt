@@ -17,7 +17,7 @@ private fun prepareFixture(): Pair<Element, () -> dynamic> {
     return container to root
 }
 
-internal fun <M, S> serialTest(init: M, update: Update<M, S>, view: View<M, S>, vararg tests: (root: () -> dynamic) -> Unit): Bluebird<Unit> {
+internal fun <M, S> serialTest(init: M, update: Update<M, S>, view: View<M, S>, vararg tests: (root: () -> dynamic) -> dynamic): Bluebird<Unit> {
     var program: Program<M, S>? = null
     return Bluebird<Unit>({ resolve, reject ->
         val (container, root) = prepareFixture()
@@ -44,6 +44,6 @@ internal fun <M, S> serialTest(init: M, update: Update<M, S>, view: View<M, S>, 
     }
 }
 
-internal fun <M, S> asyncSerialTest(init: M, update: Update<M, S>, view: View<M, S>, vararg tests: (root: () -> dynamic) -> Unit) {
+internal fun <M, S> asyncSerialTest(init: M, update: Update<M, S>, view: View<M, S>, vararg tests: (root: () -> dynamic) -> dynamic) {
     asyncTest(serialTest(init, update, view, *tests))
 }

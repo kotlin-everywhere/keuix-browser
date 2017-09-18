@@ -30,13 +30,13 @@ sealed class Cmd<out S> {
         }
 
         fun <S> focus(elementId: String): Cmd<S> {
-            return UiProcessor {
+            return sideEffect {
                 (document.getElementById(elementId) as? HTMLInputElement)?.focus()
             }
         }
 
         fun <S> alert(message: String): Cmd<S> {
-            return UiProcessor {
+            return sideEffect {
                 window.alert(message)
             }
         }
@@ -58,6 +58,10 @@ sealed class Cmd<out S> {
                         .then { window.confirm(message) }
                         .then(tagger)
             }
+        }
+
+        fun <S> sideEffect(body: () -> Unit): Cmd<S> {
+            return UiProcessor(body)
         }
     }
 
