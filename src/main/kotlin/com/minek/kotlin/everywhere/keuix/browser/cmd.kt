@@ -25,8 +25,8 @@ sealed class Cmd<out S> {
             }
         }
 
-        fun <S> batch(vararg cmds: Cmd<S>): Cmd<S> {
-            return CmdList(cmds.asList())
+        fun <S> batch(vararg cmds: Cmd<S>?): Cmd<S> {
+            return CmdList(cmds.asList().filterNotNull())
         }
 
         fun <S> focus(elementId: String): Cmd<S> {
