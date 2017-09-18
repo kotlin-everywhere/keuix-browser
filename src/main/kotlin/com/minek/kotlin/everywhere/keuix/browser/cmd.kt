@@ -20,8 +20,13 @@ sealed class Cmd<out S> {
             return when (cmd) {
                 is Promised -> wrap { cmd.body().then(tagger) as Bluebird }
                 is UiProcessor -> UiProcessor(cmd.body)
+                is CmdList -> CmdList(cmd.list.mapNotNull { map(it, tagger) })
                 null -> null
             }
+        }
+
+        fun <S> batch(vararg cmds: Cmd<S>): Cmd<S> {
+            return CmdList(cmds.asList())
         }
 
         fun <S> focus(elementId: String): Cmd<S> {
@@ -58,4 +63,5 @@ sealed class Cmd<out S> {
 
     internal class Promised<out S>(internal val body: () -> Bluebird<S>) : Cmd<S>()
     internal class UiProcessor<out S>(internal val body: () -> Unit) : Cmd<S>()
+    internal class CmdList<out S>(internal val list: List<Cmd<S>>) : Cmd<S>()
 }

@@ -100,6 +100,41 @@ class TestCmd {
         asyncTest(((Cmd.map(Cmd.value("inner")) { "outer-$it" }) as Cmd.Promised).body().then { assertEquals("outer-inner", it) })
     }
 
+    sealed class CmdBatchMsg {
+        object Click : CmdBatchMsg()
+        object AddOne : CmdBatchMsg()
+        object AddTen : CmdBatchMsg()
+    }
+
+    @Test
+    fun testCmdBatch() {
+        val update: Update<Int, CmdBatchMsg> = { msg, model ->
+            when (msg) {
+                CmdBatchMsg.Click -> model to Cmd.batch(Cmd.value(CmdBatchMsg.AddOne), Cmd.value(CmdBatchMsg.AddTen))
+                TestCmd.CmdBatchMsg.AddOne -> model + 1 to null
+                TestCmd.CmdBatchMsg.AddTen -> model + 10 to null
+            }
+        }
+
+        asyncSerialTest(0, update,
+                { model ->
+                    Html.div {
+                        button(onClick(CmdBatchMsg.Click), text = "$model")
+                    }
+                },
+                {
+                    assertEquals("0", it().text())
+                    it().find("button").click()
+                    Unit
+                },
+                {
+                    assertEquals("11", it().text())
+                    it().find("button").click()
+                    Unit
+                }
+        )
+    }
+
     @Test
     fun testCmdFocusAfterUiUpdate() {
         val update: Update<String, Unit> = { _, model -> model + model to Cmd.focus("test-cmd-focus") }

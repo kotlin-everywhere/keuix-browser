@@ -139,6 +139,9 @@ class Program<out M, S>(private val root: Element, init: M,
                     cmd.body()
                 }
             }
+            is Cmd.CmdList -> {
+                cmd.list.forEach(this::handleCmd)
+            }
         }
     }
 
