@@ -3,6 +3,7 @@ package com.minek.kotlin.everywhere.keuix.browser
 import com.minek.kotlin.everywhere.keduct.bluebird.Bluebird
 import org.w3c.dom.HTMLInputElement
 import kotlin.browser.document
+import kotlin.browser.window
 
 @Suppress("unused")
 sealed class Cmd<out S> {
@@ -26,6 +27,23 @@ sealed class Cmd<out S> {
         fun <S> focus(elementId: String): Cmd<S> {
             return UiProcessor {
                 (document.getElementById(elementId) as? HTMLInputElement)?.focus()
+            }
+        }
+
+        fun <S> alert(message: String): Cmd<S> {
+            return UiProcessor {
+                window.alert(message)
+            }
+        }
+
+        fun <S : Any> alerted(message: String, msg: S): Cmd<S> {
+            return wrap {
+                Bluebird
+                        .resolve(message)
+                        .then {
+                            window.alert(message)
+                            msg
+                        }
             }
         }
     }
