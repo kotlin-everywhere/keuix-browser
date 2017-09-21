@@ -4,7 +4,6 @@ import com.minek.kotlin.everywhere.keuix.browser.Cmd
 import com.minek.kotlin.everywhere.keuix.browser.html.Html
 import com.minek.kotlin.everywhere.keuix.browser.html.class_
 import com.minek.kotlin.everywhere.keuix.browser.html.src
-import com.minek.kotlin.everywhere.keuix.browser.html.value
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -518,7 +517,7 @@ class TestView {
     @Test
     fun testForm() {
         serialViewTests(
-                { _ -> Html.form(class_("form-class"))},
+                { _ -> Html.form(class_("form-class")) },
                 {
                     assertEquals("<form class=\"form-class\"></form>", it().html())
                 }
@@ -528,7 +527,7 @@ class TestView {
     @Test
     fun testBuilderForm() {
         serialViewTests(
-                { _ -> Html.div { form(class_("form-class"))} },
+                { _ -> Html.div { form(class_("form-class")) } },
                 {
                     assertEquals("<div><form class=\"form-class\"></form></div>", it().html())
                 }
@@ -538,7 +537,7 @@ class TestView {
     @Test
     fun testFieldset() {
         serialViewTests(
-                { _ -> Html.fieldset(class_("fieldset-class"))},
+                { _ -> Html.fieldset(class_("fieldset-class")) },
                 {
                     assertEquals("<fieldset class=\"fieldset-class\"></fieldset>", it().html())
                 }
@@ -548,7 +547,7 @@ class TestView {
     @Test
     fun testBuilderFieldset() {
         serialViewTests(
-                { _ -> Html.div { fieldset(class_("fieldset-class"))} },
+                { _ -> Html.div { fieldset(class_("fieldset-class")) } },
                 {
                     assertEquals("<div><fieldset class=\"fieldset-class\"></fieldset></div>", it().html())
                 }
@@ -558,7 +557,7 @@ class TestView {
     @Test
     fun testLegend() {
         serialViewTests(
-                { _ -> Html.legend(class_("legend-class"), text = "title")},
+                { _ -> Html.legend(class_("legend-class"), text = "title") },
                 {
                     assertEquals("<legend class=\"legend-class\">title</legend>", it().html())
                 }
@@ -568,9 +567,29 @@ class TestView {
     @Test
     fun testBuilderLegend() {
         serialViewTests(
-                { _ -> Html.div { legend(class_("legend-class"), text = "title")} },
+                { _ -> Html.div { legend(class_("legend-class"), text = "title") } },
                 {
                     assertEquals("<div><legend class=\"legend-class\">title</legend></div>", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testNav() {
+        serialViewTests(
+                { _ -> Html.nav(class_("nav-class")) },
+                {
+                    assertEquals("<nav class=\"nav-class\"></nav>", it().html())
+                }
+        )
+    }
+
+    @Test
+    fun testBuilderNav() {
+        serialViewTests(
+                { _ -> Html.div { nav(class_("nav-class")) } },
+                {
+                    assertEquals("<div><nav class=\"nav-class\"></nav></div>", it().html())
                 }
         )
     }
