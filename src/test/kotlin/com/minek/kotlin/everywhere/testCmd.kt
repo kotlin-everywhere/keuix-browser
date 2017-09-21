@@ -185,7 +185,7 @@ class TestCmd {
 
         asyncSerialTest(
                 0,
-                { _: Unit, model: Int -> model + 1 to Cmd.sideEffect { effected = true; console.info("called") } },
+                { _: Unit, model: Int -> model + 1 to Cmd.sideEffect { effected = true } },
                 { model -> Html.button(onClick(Unit), text = "$model") },
                 {
                     assertEquals("0", it().text())
