@@ -593,4 +593,55 @@ class TestView {
                 }
         )
     }
+
+    @Test
+    fun testTable() {
+        serialViewTests(
+                { _ ->
+                    Html.table(class_("table-class")) {
+                        +Html.tr<Msg>(class_("tr-class")) {
+                            +Html.th<Msg>(class_("th-class"), text = "Month")
+                            +Html.th<Msg>(text = "Savings")
+                        }
+                        +Html.tr<Msg> {
+                            +Html.td<Msg>(class_("td-class"), text = "January")
+                            +Html.td<Msg>(text = "\$100")
+                        }
+                    }
+                },
+                {
+                    assertEquals(
+                            "<table class=\"table-class\"><tr class=\"tr-class\"><th class=\"th-class\">Month</th><th>Savings</th></tr><tr><td class=\"td-class\">January</td><td>$100</td></tr></table>",
+                            it().html()
+                    )
+                }
+        )
+    }
+
+    @Test
+    fun testBuilderTable() {
+        serialViewTests(
+                { _ ->
+                    Html.div {
+                        table(class_("table-class")) {
+                            tr(class_("tr-class")) {
+                                th(class_("th-class"), text = "Month")
+                                th(text = "Savings")
+                            }
+                            tr {
+                                td(class_("td-class"), text = "January")
+                                td(text = "\$100")
+                            }
+                        }
+                    }
+                },
+                {
+                    assertEquals(
+                            "<div><table class=\"table-class\"><tr class=\"tr-class\"><th class=\"th-class\">Month</th><th>Savings</th></tr><tr><td class=\"td-class\">January</td><td>$100</td></tr></table></div>",
+                            it().html()
+                    )
+                }
+        )
+    }
 }
+
