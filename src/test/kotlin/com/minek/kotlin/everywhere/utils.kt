@@ -3,10 +3,7 @@ package com.minek.kotlin.everywhere
 import com.minek.kotlin.everywhere.keduct.bluebird.Bluebird
 import com.minek.kotlin.everywhere.keduct.qunit.asyncTest
 import com.minek.kotlin.everywhere.keduct.qunit.fixture
-import com.minek.kotlin.everywhere.keuix.browser.Program
-import com.minek.kotlin.everywhere.keuix.browser.Update
-import com.minek.kotlin.everywhere.keuix.browser.View
-import com.minek.kotlin.everywhere.keuix.browser.runProgram
+import com.minek.kotlin.everywhere.keuix.browser.*
 import org.w3c.dom.Element
 
 
@@ -17,12 +14,12 @@ private fun prepareFixture(): Pair<Element, () -> dynamic> {
     return container to root
 }
 
-internal fun <M, S> serialTest(init: M, update: Update<M, S>, view: View<M, S>, vararg tests: (root: () -> dynamic) -> dynamic): Bluebird<Unit> {
+internal fun <M, S> serialTest(init: M, update: Update<M, S>, view: View<M, S>, cmd: Cmd<S>? = null, vararg tests: (root: () -> dynamic) -> dynamic): Bluebird<Unit> {
     var program: Program<M, S>? = null
     return Bluebird<Unit>({ resolve, reject ->
         val (container, root) = prepareFixture()
         val lefts = tests.toMutableList()
-        program = runProgram(container, init, update, view) {
+        program = runProgram(container, init, update, view, cmd) {
             try {
                 if (lefts.isNotEmpty()) {
                     val test = lefts[0]
@@ -45,5 +42,9 @@ internal fun <M, S> serialTest(init: M, update: Update<M, S>, view: View<M, S>, 
 }
 
 internal fun <M, S> asyncSerialTest(init: M, update: Update<M, S>, view: View<M, S>, vararg tests: (root: () -> dynamic) -> dynamic) {
-    asyncTest(serialTest(init, update, view, *tests))
+    asyncSerialTest(init, update, view, null as Cmd<S>?, *tests)
+}
+
+internal fun <M, S> asyncSerialTest(init: M, update: Update<M, S>, view: View<M, S>, cmd: Cmd<S>?, vararg tests: (root: () -> dynamic) -> dynamic) {
+    asyncTest(serialTest(init, update, view, cmd, *tests))
 }

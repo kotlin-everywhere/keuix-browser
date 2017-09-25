@@ -3,12 +3,9 @@ package com.minek.kotlin.everywhere
 import com.minek.kotlin.everywhere.keduct.bluebird.Bluebird
 import com.minek.kotlin.everywhere.keduct.qunit.asyncTest
 import com.minek.kotlin.everywhere.keduct.qunit.fixture
-import com.minek.kotlin.everywhere.keuix.browser.Update
-import com.minek.kotlin.everywhere.keuix.browser.View
+import com.minek.kotlin.everywhere.keuix.browser.*
 import com.minek.kotlin.everywhere.keuix.browser.html.Html
 import com.minek.kotlin.everywhere.keuix.browser.html.onClick
-import com.minek.kotlin.everywhere.keuix.browser.runBeginnerProgram
-import com.minek.kotlin.everywhere.keuix.browser.runProgram
 import org.junit.Test
 import org.w3c.dom.Element
 import kotlin.browser.window
@@ -42,6 +39,22 @@ class TestProgram {
                 resolve(Unit)
             }
         }
+    }
+
+    @Test
+    fun testProgramInitialCmd() {
+        asyncSerialTest(
+                0,
+                { _: Unit, model: Int -> (model + 1) to null },
+                { Html.div(text = "$it") },
+                Cmd.value(Unit),
+                {
+                    assertEquals("0", it().text())
+                },
+                {
+                    assertEquals("1", it().text())
+                }
+        )
     }
 
     @Test
@@ -100,9 +113,9 @@ class TestProgram {
         val update = { _: Unit, model: Int -> model to null }
         val view: (Int) -> Html<Unit> = { model: Int -> Html.text("$model") }
         val tests = Bluebird.resolve(Unit)
-                .andThen { serialTest(0, update, view, { assertEquals("0", it().text()) }) }
+                .andThen { serialTest(0, update, view, null, { assertEquals("0", it().text()) }) }
                 .then { assertEquals("", q(fixture()).html()) }
-                .andThen { serialTest(1, update, view, { assertEquals("1", it().text()) }) }
+                .andThen { serialTest(1, update, view, null, { assertEquals("1", it().text()) }) }
         asyncTest(tests)
     }
 }

@@ -74,7 +74,7 @@ typealias Update<M, S> = (S, M) -> Pair<M, Cmd<S>?>
 typealias View<M, S> = (M) -> Html<S>
 
 class Program<out M, S>(private val root: Element, init: M,
-                        private val update: Update<M, S>, private val view: View<M, S>, onAfterRender: ((Element) -> Unit)?) {
+                        private val update: Update<M, S>, private val view: View<M, S>, initialCmd: Cmd<S>?, onAfterRender: ((Element) -> Unit)?) {
 
     private var requestAnimationFrameId: Int? = null
     private var model = init
@@ -102,6 +102,9 @@ class Program<out M, S>(private val root: Element, init: M,
 
     init {
         patch(root, virtualNode)
+        if (initialCmd != null) {
+            handleCmd(initialCmd)
+        }
     }
 
     private fun updateView() {
@@ -156,29 +159,29 @@ class Program<out M, S>(private val root: Element, init: M,
     }
 }
 
-internal fun <M, S> runProgram(root: Element, init: M, update: Update<M, S>, view: View<M, S>, onAfterRender: (Element) -> Unit): Program<M, S> {
-    return Program(root, init, update, view, onAfterRender)
+internal fun <M, S> runProgram(root: Element, init: M, update: Update<M, S>, view: View<M, S>, cmd: Cmd<S>? = null, onAfterRender: (Element) -> Unit): Program<M, S> {
+    return Program(root, init, update, view, cmd, onAfterRender)
 }
 
 @Suppress("unused")
-fun <M, S> runProgram(root: Element, init: M, update: Update<M, S>, view: View<M, S>): Program<M, S> {
-    return Program(root, init, update, view, null)
+fun <M, S> runProgram(root: Element, init: M, update: Update<M, S>, view: View<M, S>, cmd: Cmd<S>? = null): Program<M, S> {
+    return Program(root, init, update, view, cmd, null)
 }
 
 internal fun <M, S> runBeginnerProgram(root: Element, init: M, update: (S, M) -> M, view: (M) -> Html<S>, onAfterRender: (Element) -> Unit): Program<M, S> {
-    return Program(root, init, { s, m -> update(s, m) to null }, view, onAfterRender)
+    return Program(root, init, { s, m -> update(s, m) to null }, view, null, onAfterRender)
 }
 
 @Suppress("unused")
 fun <M, S> runBeginnerProgram(root: Element, init: M, update: (S, M) -> M, view: (M) -> Html<S>): Program<M, S> {
-    return Program(root, init, { s, m -> update(s, m) to null }, view, null)
+    return Program(root, init, { s, m -> update(s, m) to null }, view, null, null)
 }
 
 internal fun runBeginnerProgram(root: Element, view: Html<Unit>, onAfterRender: (Element) -> Unit): Program<Unit, Unit> {
-    return Program(root, Unit, { _, _ -> Unit to null }, { view }, onAfterRender)
+    return Program(root, Unit, { _, _ -> Unit to null }, { view }, null, onAfterRender)
 }
 
 @Suppress("unused")
 fun runBeginnerProgram(root: Element, view: Html<Unit>): Program<Unit, Unit> {
-    return Program(root, Unit, { _, _ -> Unit to null }, { view }, null)
+    return Program(root, Unit, { _, _ -> Unit to null }, { view }, null, null)
 }
