@@ -121,6 +121,10 @@ class HtmlBuilder<S> {
         element("table", attributes.toList(), init = init)
     }
 
+    fun tbody(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null) {
+        element("tbody", attributes.toList(), init = init)
+    }
+
     fun tr(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null) {
         element("tr", attributes.toList(), init = init)
     }
@@ -364,6 +368,10 @@ sealed class Html<out S> {
 
         fun <S> table(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
             return element("table", attributes.toList(), init = init)
+        }
+
+        fun <S> tbody(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {
+            return element("tbody", attributes.toList(), init = init)
         }
 
         fun <S> tr(vararg attributes: Attribute<S>, init: HtmlBuilderInit<S>? = null): Html<S> {

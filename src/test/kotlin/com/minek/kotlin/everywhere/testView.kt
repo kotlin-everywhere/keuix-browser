@@ -599,19 +599,21 @@ class TestView {
         serialViewTests(
                 { _ ->
                     Html.table(class_("table-class")) {
-                        +Html.tr<Msg>(class_("tr-class")) {
-                            +Html.th<Msg>(class_("th-class"), text = "Month")
-                            +Html.th<Msg>(text = "Savings")
-                        }
-                        +Html.tr<Msg> {
-                            +Html.td<Msg>(class_("td-class"), text = "January")
-                            +Html.td<Msg>(text = "\$100")
+                        +Html.tbody<Msg>(class_("tbody-class")) {
+                            +Html.tr<Msg>(class_("tr-class")) {
+                                +Html.th<Msg>(class_("th-class"), text = "Month")
+                                +Html.th<Msg>(text = "Savings")
+                            }
+                            +Html.tr<Msg> {
+                                +Html.td<Msg>(class_("td-class"), text = "January")
+                                +Html.td<Msg>(text = "\$100")
+                            }
                         }
                     }
                 },
                 {
                     assertEquals(
-                            "<table class=\"table-class\"><tr class=\"tr-class\"><th class=\"th-class\">Month</th><th>Savings</th></tr><tr><td class=\"td-class\">January</td><td>$100</td></tr></table>",
+                            "<table class=\"table-class\"><tbody class=\"tbody-class\"><tr class=\"tr-class\"><th class=\"th-class\">Month</th><th>Savings</th></tr><tr><td class=\"td-class\">January</td><td>$100</td></tr></tbody></table>",
                             it().html()
                     )
                 }
@@ -624,20 +626,22 @@ class TestView {
                 { _ ->
                     Html.div {
                         table(class_("table-class")) {
-                            tr(class_("tr-class")) {
-                                th(class_("th-class"), text = "Month")
-                                th(text = "Savings")
-                            }
-                            tr {
-                                td(class_("td-class"), text = "January")
-                                td(text = "\$100")
+                            tbody(class_("tbody-class")) {
+                                tr(class_("tr-class")) {
+                                    th(class_("th-class"), text = "Month")
+                                    th(text = "Savings")
+                                }
+                                tr {
+                                    td(class_("td-class"), text = "January")
+                                    td(text = "\$100")
+                                }
                             }
                         }
                     }
                 },
                 {
                     assertEquals(
-                            "<div><table class=\"table-class\"><tr class=\"tr-class\"><th class=\"th-class\">Month</th><th>Savings</th></tr><tr><td class=\"td-class\">January</td><td>$100</td></tr></table></div>",
+                            "<div><table class=\"table-class\"><tbody class=\"tbody-class\"><tr class=\"tr-class\"><th class=\"th-class\">Month</th><th>Savings</th></tr><tr><td class=\"td-class\">January</td><td>$100</td></tr></tbody></table></div>",
                             it().html()
                     )
                 }
