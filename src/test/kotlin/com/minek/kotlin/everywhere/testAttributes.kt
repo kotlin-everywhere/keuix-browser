@@ -219,4 +219,16 @@ class TestAttributes {
                 }
         )
     }
+
+    @Test
+    fun testInnerHtml() {
+        serialViewTests(
+                {
+                    Html.div(innerHtml("<div>Unsafe</div>"))
+                },
+                {
+                    assertEquals("<div><div>Unsafe</div></div>", it().html())
+                }
+        )
+    }
 }

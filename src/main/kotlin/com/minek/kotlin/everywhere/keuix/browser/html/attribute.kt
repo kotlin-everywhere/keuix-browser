@@ -66,3 +66,7 @@ fun <S> for_(for_: String): Attribute<S> {
 fun <S> key(key: String): Attribute<S> {
     return Attribute.Key(key)
 }
+
+fun <S> innerHtml(html: String): Attribute<S> {
+    return Attribute.TextProperty("innerHTML", html)
+}
