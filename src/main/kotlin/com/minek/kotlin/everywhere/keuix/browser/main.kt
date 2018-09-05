@@ -171,18 +171,9 @@ fun <M, S> runProgram(root: Element, init: M, update: Update<M, S>, view: View<M
     return Program(root, init, update, view, cmd, null)
 }
 
-internal fun <M, S> runBeginnerProgram(root: Element, init: M, update: (S, M) -> M, view: (M) -> Html<S>, onAfterRender: (Element) -> Unit): Program<M, S> {
-    return Program(root, init, { s, m -> update(s, m) to null }, view, null, onAfterRender)
-}
-
 @Suppress("unused")
-fun <M, S> runBeginnerProgram(root: Element, init: M, update: (S, M) -> M, view: (M) -> Html<S>): Program<M, S> {
-    return Program(root, init, { s, m -> update(s, m) to null }, view, null, null)
-}
-
-@Suppress("unused")
-fun <M, S : Any> runBeginnerProgramDebug(root: Element, init: M, update: (S, M) -> M, view: (M) -> Html<S>): Program<DebuggerModel<M, S>, DebuggerMsg<S>> {
-    val debugger = debugger(userInit = init, userUpdate = { s, m -> update(s, m) to null }, userView = view)
+fun <M, S : Any> runProgramDebugger(root: Element, init: M, update: Update<M, S>, view: View<M, S>, cmd: Cmd<S>? = null): Program<DebuggerModel<M, S>, DebuggerMsg<S>> {
+    val debugger = debugger(userInit = init, userUpdate = update, userView = view, userCmd = cmd)
     return Program(
             root,
             debugger.init,
@@ -191,6 +182,15 @@ fun <M, S : Any> runBeginnerProgramDebug(root: Element, init: M, update: (S, M) 
             debugger.cmd,
             null
     )
+}
+
+internal fun <M, S> runBeginnerProgram(root: Element, init: M, update: (S, M) -> M, view: (M) -> Html<S>, onAfterRender: (Element) -> Unit): Program<M, S> {
+    return Program(root, init, { s, m -> update(s, m) to null }, view, null, onAfterRender)
+}
+
+@Suppress("unused")
+fun <M, S> runBeginnerProgram(root: Element, init: M, update: (S, M) -> M, view: (M) -> Html<S>): Program<M, S> {
+    return Program(root, init, { s, m -> update(s, m) to null }, view, null, null)
 }
 
 internal fun runBeginnerProgram(root: Element, view: Html<Unit>, onAfterRender: (Element) -> Unit): Program<Unit, Unit> {
