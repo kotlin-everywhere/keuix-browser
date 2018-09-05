@@ -2,7 +2,7 @@ package com.minek.kotlin.everywhere.keuix
 
 import com.minek.kotlin.everywhere.keuix.browser.html.Html
 import com.minek.kotlin.everywhere.keuix.browser.html.onClick
-import com.minek.kotlin.everywhere.keuix.browser.runBeginnerProgram
+import com.minek.kotlin.everywhere.keuix.browser.runBeginnerProgramDebug
 import kotlin.browser.window
 import kotlin.dom.createElement
 
@@ -12,7 +12,7 @@ fun testDebugger() {
     val container = window.document.createElement("div") {}
     window.document.body!!.appendChild(container)
 
-    runBeginnerProgram(root = container, init = Model(), update = ::update, view = ::view)
+    runBeginnerProgramDebug(root = container, init = Model(), update = ::update, view = ::view)
 }
 
 data class Model(val count: Int = 0)

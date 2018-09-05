@@ -1,11 +1,14 @@
 package com.minek.kotlin.everywhere.keuix.browser
 
 import com.minek.kotlin.everywhere.keuix.browser.Snabbdom.h
+import com.minek.kotlin.everywhere.keuix.browser.debugger.debugger
 import com.minek.kotlin.everywhere.keuix.browser.html.Attribute
 import com.minek.kotlin.everywhere.keuix.browser.html.Html
 import org.w3c.dom.Element
 import org.w3c.dom.events.Event
 import kotlin.browser.window
+import com.minek.kotlin.everywhere.keuix.browser.debugger.Model as DebuggerModel
+import com.minek.kotlin.everywhere.keuix.browser.debugger.Msg as DebuggerMsg
 
 data class AttributeSet(val props: dynamic, val attrs: dynamic, val on: dynamic, val key: String?)
 
@@ -175,6 +178,19 @@ internal fun <M, S> runBeginnerProgram(root: Element, init: M, update: (S, M) ->
 @Suppress("unused")
 fun <M, S> runBeginnerProgram(root: Element, init: M, update: (S, M) -> M, view: (M) -> Html<S>): Program<M, S> {
     return Program(root, init, { s, m -> update(s, m) to null }, view, null, null)
+}
+
+@Suppress("unused")
+fun <M, S> runBeginnerProgramDebug(root: Element, init: M, update: (S, M) -> M, view: (M) -> Html<S>): Program<DebuggerModel<M, S>, DebuggerMsg<S>> {
+    val debugger = debugger(userInit = init, userUpdate = { s, m -> update(s, m) to null }, userView = view)
+    return Program(
+            root,
+            debugger.init,
+            debugger.update,
+            debugger.view,
+            debugger.cmd,
+            null
+    )
 }
 
 internal fun runBeginnerProgram(root: Element, view: Html<Unit>, onAfterRender: (Element) -> Unit): Program<Unit, Unit> {
