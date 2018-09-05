@@ -181,7 +181,7 @@ fun <M, S> runBeginnerProgram(root: Element, init: M, update: (S, M) -> M, view:
 }
 
 @Suppress("unused")
-fun <M, S> runBeginnerProgramDebug(root: Element, init: M, update: (S, M) -> M, view: (M) -> Html<S>): Program<DebuggerModel<M, S>, DebuggerMsg<S>> {
+fun <M, S : Any> runBeginnerProgramDebug(root: Element, init: M, update: (S, M) -> M, view: (M) -> Html<S>): Program<DebuggerModel<M, S>, DebuggerMsg<S>> {
     val debugger = debugger(userInit = init, userUpdate = { s, m -> update(s, m) to null }, userView = view)
     return Program(
             root,
