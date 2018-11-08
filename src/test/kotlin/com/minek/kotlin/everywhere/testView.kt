@@ -4,7 +4,7 @@ import com.minek.kotlin.everywhere.keuix.browser.Cmd
 import com.minek.kotlin.everywhere.keuix.browser.html.Html
 import com.minek.kotlin.everywhere.keuix.browser.html.class_
 import com.minek.kotlin.everywhere.keuix.browser.html.src
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 

@@ -16,7 +16,7 @@ import com.minek.kotlin.everywhere.keuix.browser.html.Html
 import com.minek.kotlin.everywhere.keuix.browser.html.id
 import com.minek.kotlin.everywhere.keuix.browser.html.onClick
 import com.minek.kotlin.everywhere.keuix.browser.testCrate
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.browser.document
 import kotlin.test.assertEquals
 import kotlin.test.assertNull

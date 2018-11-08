@@ -6,7 +6,7 @@ import com.minek.kotlin.everywhere.keduct.qunit.fixture
 import com.minek.kotlin.everywhere.keuix.browser.*
 import com.minek.kotlin.everywhere.keuix.browser.html.Html
 import com.minek.kotlin.everywhere.keuix.browser.html.onClick
-import org.junit.Test
+import kotlin.test.Test
 import org.w3c.dom.Element
 import kotlin.browser.window
 import kotlin.test.assertEquals

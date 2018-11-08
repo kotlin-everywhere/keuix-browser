@@ -4,7 +4,7 @@ import com.minek.kotlin.everywhere.keduct.bluebird.Bluebird
 import com.minek.kotlin.everywhere.keduct.qunit.asyncTest
 import com.minek.kotlin.everywhere.kelibs.result.Ok
 import com.minek.kotlin.everywhere.keuix.browser.common.TestCrate
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 val testCrate = TestCrate().apply { i(remote = "http://localhost:8000") }

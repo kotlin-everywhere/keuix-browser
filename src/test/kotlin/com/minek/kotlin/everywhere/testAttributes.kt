@@ -2,7 +2,7 @@ package com.minek.kotlin.everywhere
 
 import com.minek.kotlin.everywhere.keuix.browser.Update
 import com.minek.kotlin.everywhere.keuix.browser.html.*
-import org.junit.Test
+import kotlin.test.Test
 import org.w3c.dom.HTMLElement
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
