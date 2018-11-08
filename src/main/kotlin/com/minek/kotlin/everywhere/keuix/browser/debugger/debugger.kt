@@ -89,8 +89,8 @@ private fun <M, S : Any> viewNavigateState(currentStateIndex: Int, states: List<
 
     return Html.div {
         // blocker
-        div(style("position: fixed; top: 0; left: 0; width: 100%; height: 100%"))
-        div(style("position: fixed; bottom: 0; right: 0; width: 800px; height: 300px; border: 1px solid black; overflow: hidden;")) {
+        div(style("position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 999999999;"))
+        div(style("position: fixed; bottom: 0; right: 0; width: 800px; height: 300px; border: 1px solid black; overflow: hidden; z-index: 999999999;")) {
             div(style("width: 300px; float: left; background-color: black; height: 90%; overflow: hidden scroll")) {
                 states.forEachIndexed { index, it ->
                     val bStyle =
