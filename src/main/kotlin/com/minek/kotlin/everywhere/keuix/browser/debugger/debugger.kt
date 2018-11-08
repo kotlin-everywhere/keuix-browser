@@ -100,7 +100,7 @@ private fun <M, S : Any> viewNavigateState(currentStateIndex: Int, states: List<
                                 "background-color: black; color: white"
                     button(
                             onClick(SetCurrentStateIndex(index)),
-                            style("width: 100%; height: 10%; font-size: 13px; border:none; outline:0; background-color: black; text-align: left; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; $bStyle"),
+                            style("width: 100%; font: normal normal normal 13px sans-serif; padding: 10px; border:none; outline:0; background-color: black; text-align: left; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; $bStyle"),
                             text = it.first.dumps()
                     )
                 }
@@ -112,12 +112,12 @@ private fun <M, S : Any> viewNavigateState(currentStateIndex: Int, states: List<
                 } else {
                     cs.first.dumps() to (cs.second?.dumps() ?: "null")
                 }
-                div(style("font-size: 20px; color: black; padding: 20px;"), text = msgText)
-                div(style("font-size: 12px; color: black; padding: 20px; border-top: 1px solid #3f51b5"), text = modelText)
+                div(style("font: normal normal normal 20px sans-serif; color: black; padding: 20px;"), text = msgText)
+                div(style("font: normal normal normal 13px sans-serif; padding: 20px; border-top: 1px solid #3f51b5"), text = modelText)
             }
             button(
                     onClick(CloseNavigate()),
-                    style("width: 300px; height: 10%; font-size: 14px; position: absolute; bottom: 0px; left: 0px; border:none; background-color: #009688; color: white"),
+                    style("width: 300px; font: normal normal normal 14px sans-serif; padding: 10px; position: absolute; bottom: 0px; left: 0px; border:none; background-color: #009688; color: white"),
                     text = "Close"
             )
 //            button(onClick(CloseNavigate()), style("position: absolute; top: 10px;"), text = "X")
