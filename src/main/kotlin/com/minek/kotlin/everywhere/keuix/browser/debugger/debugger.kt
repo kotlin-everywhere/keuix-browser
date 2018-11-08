@@ -89,23 +89,55 @@ private fun <M, S : Any> viewNavigateState(currentStateIndex: Int, states: List<
 
     return Html.div {
         // blocker
-        if (currentStateIndex != states.lastIndex) {
-            div(style("position: fixed; top: 0; left: 0; width: 100%; height: 100%"))
-        }
-        div(style("position: fixed; bottom: 0; right: 0; width: 800px; height: 300px; border: 1px solid black; overflow: scroll;")) {
-            button(onClick(CloseNavigate()), text = "X")
-            ol {
+        div(style("position: fixed; top: 0; left: 0; width: 100%; height: 100%"))
+        div(style("position: fixed; bottom: 0; right: 0; width: 800px; height: 300px; border: 1px solid black; overflow: hidden;")) {
+            div(style("width: 300px; float: left; background-color: black; height: 90%; overflow: hidden scroll")) {
                 states.forEachIndexed { index, it ->
-                    val liStyle = if (index == currentStateIndex) {
-                        "color: red"
-                    } else {
-                        ""
-                    }
-                    li(style(liStyle), onClick(SetCurrentStateIndex(index)), text = "${it.first} -> ${it.second}")
+                    val bStyle =
+                            if (index == currentStateIndex)
+                                "background-color: gray; color: white"
+                            else
+                                "background-color: black; color: white"
+                    button(
+                            onClick(SetCurrentStateIndex(index)),
+                            style("width: 100%; height: 10%; font-size: 13px; border:none; outline:0; background-color: black; text-align: left; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; $bStyle"),
+                            text = it.first.dumps()
+                    )
                 }
             }
+            div(style("width: 500px; float: right; background-color: white; height: 100%; overflow-y: scroll")) {
+                val cs = states.getOrNull(currentStateIndex)
+                val (msgText, modelText) = if (cs == null) {
+                    "" to ""
+                } else {
+                    cs.first.dumps() to (cs.second?.dumps() ?: "null")
+                }
+                div(style("font-size: 20px; color: black; padding: 20px;"), text = msgText)
+                div(style("font-size: 12px; color: black; padding: 20px; border-top: 1px solid #3f51b5"), text = modelText)
+            }
+            button(
+                    onClick(CloseNavigate()),
+                    style("width: 300px; height: 10%; font-size: 14px; position: absolute; bottom: 0px; left: 0px; border:none; background-color: #009688; color: white"),
+                    text = "Close"
+            )
+//            button(onClick(CloseNavigate()), style("position: absolute; top: 10px;"), text = "X")
+//            ol {
+//                states.forEachIndexed { index, it ->
+//                    val liStyle = if (index == currentStateIndex) {
+//                        "color: red"
+//                    } else {
+//                        ""
+//                    }
+//                    li(style(liStyle), onClick(SetCurrentStateIndex(index)), text = "${it.first} -> ${it.second}")
+//                }
+//            }
         }
     }
+}
+
+fun Any.dumps(): String {
+    return if (toString() == "[object Object]") this::class.simpleName ?: "Invalid Kotlin Object"
+    else toString()
 }
 
 
