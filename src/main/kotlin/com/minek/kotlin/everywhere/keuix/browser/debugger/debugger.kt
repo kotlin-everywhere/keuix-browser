@@ -60,7 +60,7 @@ private fun <M, S : Any> update(userUpdate: Update<M, S>, msg: Msg<S>, model: Mo
         }
 
         is CloseNavigate -> {
-            model.copy(currentStateIndex = null, user = model.states.first().second) to null
+            model.copy(currentStateIndex = null, user = model.states.last().second) to null
         }
     }
 }
